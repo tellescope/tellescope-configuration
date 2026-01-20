@@ -1,0 +1,512 @@
+{
+  "exportedAt": "2026-01-20T17:41:23.110Z",
+  "organizationId": "63a0d6be40e38ba9e899a490",
+  "organizationName": "1 Tellescope Unresett",
+  "version": "1.0",
+  "title": "1-tellescope-unresett-config-2026-01-20",
+  "data": {
+    "forms": [
+      {
+        "id": "68e973647f46fdbd3a344694",
+        "title": "PHQ-9 Depression Screening",
+        "thanksMessage": "Thank you for completing the PHQ-9 screening. Your responses have been recorded.",
+        "type": "enduserFacing",
+        "ipAddressCustomField": "IP Address",
+        "version": "v2",
+        "numFields": 10,
+        "scoring": [
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97374f06fd8c6d933a892",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97374f06fd8c6d933a892",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97374f06fd8c6d933a892",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97374f06fd8c6d933a892",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973807f46fdbd3a344698",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973807f46fdbd3a344698",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973807f46fdbd3a344698",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973807f46fdbd3a344698",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97385f06fd8c6d933a894",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97385f06fd8c6d933a894",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97385f06fd8c6d933a894",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97385f06fd8c6d933a894",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738af06fd8c6d933a896",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738af06fd8c6d933a896",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738af06fd8c6d933a896",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738af06fd8c6d933a896",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738e7f46fdbd3a34469a",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738e7f46fdbd3a34469a",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738e7f46fdbd3a34469a",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9738e7f46fdbd3a34469a",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97393f06fd8c6d933a898",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97393f06fd8c6d933a898",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97393f06fd8c6d933a898",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e97393f06fd8c6d933a898",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973977f46fdbd3a34469c",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973977f46fdbd3a34469c",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973977f46fdbd3a34469c",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973977f46fdbd3a34469c",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9739cf06fd8c6d933a89a",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9739cf06fd8c6d933a89a",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9739cf06fd8c6d933a89a",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e9739cf06fd8c6d933a89a",
+            "response": "Nearly every day",
+            "score": 3
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973a07f46fdbd3a34469e",
+            "response": "Not at all",
+            "score": 0
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973a07f46fdbd3a34469e",
+            "response": "Several days",
+            "score": 1
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973a07f46fdbd3a34469e",
+            "response": "More than half the days",
+            "score": 2
+          },
+          {
+            "title": "PHQ-9 Score",
+            "fieldId": "68e973a07f46fdbd3a34469e",
+            "response": "Nearly every day",
+            "score": 3
+          }
+        ],
+        "intakeDateOfBirth": "hidden",
+        "intakePhone": "required",
+        "intakeState": "hidden",
+        "intakeGender": "hidden",
+        "allowPublicURL": true,
+        "fields": [
+          {
+            "id": "68e973a07f46fdbd3a34469e",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Thoughts that you would be better off dead, or of hurting yourself in some way",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e9739cf06fd8c6d933a89a"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e9739cf06fd8c6d933a89a",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Moving or speaking so slowly that other people could have noticed. Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e973977f46fdbd3a34469c"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e973977f46fdbd3a34469c",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Trouble concentrating on things, such as reading the newspaper or watching television",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e97393f06fd8c6d933a898"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e97393f06fd8c6d933a898",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Feeling bad about yourself - or that you are a failure or have let yourself or your family down",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e9738e7f46fdbd3a34469a"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e9738e7f46fdbd3a34469a",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Poor appetite or overeating",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e9738af06fd8c6d933a896"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e9738af06fd8c6d933a896",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Feeling tired or having little energy",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e97385f06fd8c6d933a894"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e97385f06fd8c6d933a894",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Trouble falling or staying asleep, or sleeping too much",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e973807f46fdbd3a344698"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e973807f46fdbd3a344698",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Feeling down, depressed, or hopeless",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e97374f06fd8c6d933a892"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "68e97374f06fd8c6d933a892",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "Little interest or pleasure in doing things",
+            "type": "multiple_choice",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "68e9736c7f46fdbd3a344696"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Not at all",
+                "Several days",
+                "More than half the days",
+                "Nearly every day"
+              ],
+              "optionDetails": [
+                {
+                  "option": "Not at all",
+                  "description": ""
+                },
+                {
+                  "option": "Several days",
+                  "description": ""
+                },
+                {
+                  "option": "More than half the days",
+                  "description": ""
+                },
+                {
+                  "option": "Nearly every day",
+                  "description": ""
+                }
+              ],
+              "radio": true
+            },
+            "description": "",
+            "disabledWhenPrepopulated": false,
+            "externalId": "",
+            "fullZIP": false,
+            "highlightOnTimeline": false,
+            "htmlDescription": "",
+            "internalNote": "",
+            "isOptional": false,
+            "prepopulateFromFields": false,
+            "sharedWithEnduser": false,
+            "titleFontSize": 20
+          },
+          {
+            "id": "68e9736c7f46fdbd3a344696",
+            "formId": "68e973647f46fdbd3a344694",
+            "title": "PHQ-9 Depression Screening Instructions",
+            "type": "description",
+            "previousFields": [
+              {
+                "type": "root",
+                "info": {}
+              }
+            ],
+            "htmlDescription": "<p><strong>Over the last 2 weeks, how often have you been bothered by any of the following problems?</strong></p>",
+            "description": "",
+            "disabledWhenPrepopulated": false,
+            "externalId": "",
+            "fullZIP": false,
+            "highlightOnTimeline": false,
+            "internalNote": "",
+            "isOptional": false,
+            "options": {
+              "choices": [
+                "Option 1"
+              ],
+              "from": 1,
+              "to": 10,
+              "saveIntakeOnPartial": true
+            },
+            "prepopulateFromFields": false,
+            "sharedWithEnduser": false,
+            "titleFontSize": 20
+          }
+        ]
+      }
+    ]
+  }
+}

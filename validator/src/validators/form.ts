@@ -20,13 +20,25 @@ try {
 
 interface FormFieldLike {
   id?: string;
+  formId?: string;
   title?: string;
   type?: string;
   previousFields?: Array<{
     type?: string;
     info?: { fieldId?: string; equals?: string };
   }>;
+  options?: {
+    choices?: string[];
+    [key: string]: unknown;
+  };
   [key: string]: unknown;
+}
+
+interface ScoringEntry {
+  title?: string;
+  fieldId?: string;
+  response?: string;
+  score?: number;
 }
 
 interface FormLike {
@@ -36,10 +48,16 @@ interface FormLike {
   numFields?: number;
   fields?: FormFieldLike[];
   type?: string;
+  scoring?: ScoringEntry[];
+  intakeDateOfBirth?: string;
+  intakePhone?: string;
+  intakeState?: string;
+  intakeGender?: string;
   [key: string]: unknown;
 }
 
 const VALID_FORM_TYPES = ['note', 'enduserFacing'];
+const VALID_INTAKE_VALUES = ['required', 'optional', 'hidden'];
 
 /**
  * Validate form field chain (previousFields references)
@@ -126,7 +144,7 @@ function validateFormFieldChain(form: FormLike, basePath: string): ValidationErr
 /**
  * Validate a single form field
  */
-function validateFormField(field: unknown, index: number, formPath: string): ValidationError[] {
+function validateFormField(field: unknown, index: number, formPath: string, formId?: string): ValidationError[] {
   const errors: ValidationError[] = [];
   const fieldPath = appendPath(formPath, 'fields', index);
 
@@ -160,6 +178,27 @@ function validateFormField(field: unknown, index: number, formPath: string): Val
         severity: 'error',
         expected: '24-character hex string',
         actual: safeStringify(f.id),
+      });
+    }
+  }
+
+  // Validate formId matches parent form
+  if (f.formId !== undefined && formId !== undefined) {
+    if (f.formId !== formId) {
+      errors.push({
+        code: 'REFERENCE_NOT_FOUND',
+        message: `FormField formId '${f.formId}' does not match parent form ID '${formId}'`,
+        path: appendPath(fieldPath, 'formId'),
+        severity: 'error',
+        expected: formId,
+        actual: f.formId,
+        suggestion: {
+          type: 'replace',
+          targetPath: appendPath(fieldPath, 'formId'),
+          value: formId,
+          description: 'Update formId to match parent form',
+          confidence: 'high',
+        },
       });
     }
   }
@@ -297,6 +336,110 @@ function validateForm(form: unknown, index: number): ValidationError[] {
     }
   }
 
+  // Validate intake fields (when present)
+  const intakeFields = ['intakeDateOfBirth', 'intakePhone', 'intakeState', 'intakeGender'] as const;
+  for (const intakeField of intakeFields) {
+    const value = f[intakeField];
+    if (value !== undefined && value !== null) {
+      if (!VALID_INTAKE_VALUES.includes(value as string)) {
+        errors.push({
+          code: 'INVALID_ENUM_VALUE',
+          message: `Form ${intakeField} must be one of: ${VALID_INTAKE_VALUES.join(', ')}`,
+          path: appendPath(basePath, intakeField),
+          severity: 'error',
+          expected: VALID_INTAKE_VALUES.join(' | '),
+          actual: safeStringify(value),
+        });
+      }
+    }
+  }
+
+  // Validate scoring entries (if present)
+  if (f.scoring && Array.isArray(f.scoring)) {
+    // Build field ID to choices map for response validation
+    const fieldChoicesMap = new Map<string, string[]>();
+    const fieldIds = new Set<string>();
+
+    if (f.fields && Array.isArray(f.fields)) {
+      for (const field of f.fields) {
+        if (field.id) {
+          fieldIds.add(field.id);
+          if (field.options?.choices && Array.isArray(field.options.choices)) {
+            fieldChoicesMap.set(field.id, field.options.choices);
+          }
+        }
+      }
+    }
+
+    f.scoring.forEach((entry, scoreIndex) => {
+      const scorePath = appendPath(basePath, 'scoring', scoreIndex);
+
+      // Validate fieldId references an existing field
+      if (entry.fieldId) {
+        if (!fieldIds.has(entry.fieldId)) {
+          errors.push({
+            code: 'INVALID_SCORING_FIELD',
+            message: `Scoring entry references non-existent field ID: ${entry.fieldId}`,
+            path: appendPath(scorePath, 'fieldId'),
+            severity: 'error',
+            expected: 'valid field ID from same form',
+            actual: entry.fieldId,
+            context: {
+              availableFieldIds: Array.from(fieldIds),
+            },
+          });
+        } else {
+          // Validate response matches one of the field's choices
+          if (entry.response !== undefined) {
+            const choices = fieldChoicesMap.get(entry.fieldId);
+            if (choices && !choices.includes(entry.response)) {
+              errors.push({
+                code: 'INVALID_SCORING_RESPONSE',
+                message: `Scoring response "${entry.response}" does not match any choice for field ${entry.fieldId}`,
+                path: appendPath(scorePath, 'response'),
+                severity: 'error',
+                expected: `one of: ${choices.join(', ')}`,
+                actual: entry.response,
+                context: {
+                  availableChoices: choices,
+                },
+              });
+            }
+          }
+        }
+      }
+
+      // Validate score is a non-negative number
+      if (entry.score !== undefined) {
+        if (typeof entry.score !== 'number') {
+          errors.push({
+            code: 'INVALID_TYPE',
+            message: 'Scoring entry score must be a number',
+            path: appendPath(scorePath, 'score'),
+            severity: 'error',
+            expected: 'number',
+            actual: typeof entry.score,
+          });
+        } else if (nonNegNumberValidator) {
+          try {
+            nonNegNumberValidator.validate()(entry.score);
+          } catch (error) {
+            errors.push(convertErrorToValidationError(error, appendPath(scorePath, 'score'), entry.score));
+          }
+        } else if (entry.score < 0) {
+          errors.push({
+            code: 'INVALID_VALUE',
+            message: 'Scoring entry score must be non-negative',
+            path: appendPath(scorePath, 'score'),
+            severity: 'error',
+            expected: 'non-negative number',
+            actual: String(entry.score),
+          });
+        }
+      }
+    });
+  }
+
   // Validate numFields matches actual count
   if (f.fields && Array.isArray(f.fields)) {
     const actualCount = f.fields.length;
@@ -320,7 +463,7 @@ function validateForm(form: unknown, index: number): ValidationError[] {
 
     // Validate each field
     f.fields.forEach((field, fieldIndex) => {
-      errors.push(...validateFormField(field, fieldIndex, basePath));
+      errors.push(...validateFormField(field, fieldIndex, basePath, f.id));
     });
 
     // Validate field chain

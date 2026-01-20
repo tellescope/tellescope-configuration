@@ -20,6 +20,10 @@ export type ValidationErrorCode =
   | 'MISSING_ROOT_FIELD'
   | 'DUPLICATE_ROOT_FIELD'
   | 'FIELD_COUNT_MISMATCH'
+  | 'INVALID_SCORING_FIELD'
+  | 'INVALID_SCORING_RESPONSE'
+  // General value errors
+  | 'INVALID_VALUE'
   // Template-specific errors
   | 'INVALID_VARIABLE_SYNTAX'
   | 'UNCLOSED_VARIABLE'
