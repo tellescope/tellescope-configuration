@@ -13,7 +13,10 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:unit": "vitest run tests/examples.test.ts tests/invalid-configs.test.ts tests/validators/",
+    "eval": "vitest run tests/evals.test.ts",
+    "eval:watch": "vitest tests/evals.test.ts"
   },
   "dependencies": {
     "@tellescope/schema": "1.238.0",
