@@ -38,6 +38,7 @@ All Tellescope configuration exports follow this root structure:
   "organizationId": "507f1f77bcf86cd799439011",
   "organizationName": "Organization Name",
   "version": "1.0",
+  "title": "config-name-2025-01-19",
   "data": {
     "journeys": [],
     "automation_triggers": [],
@@ -48,6 +49,15 @@ All Tellescope configuration exports follow this root structure:
   }
 }
 ```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `exportedAt` | Yes | ISO 8601 timestamp of export |
+| `organizationId` | Yes | MongoDB ObjectId of organization |
+| `organizationName` | Yes | Organization display name |
+| `version` | Yes | Export format version (currently "1.0") |
+| `title` | No | Optional descriptive name for the configuration |
+| `data` | Yes | Container for all model arrays |
 
 ### Key Model Types
 

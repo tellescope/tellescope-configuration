@@ -1,0 +1,33 @@
+{
+  "exportedAt": "2026-01-20T00:00:00.000Z",
+  "organizationId": "507f1f77bcf86cd799439011",
+  "organizationName": "Test Org",
+  "version": "1.0",
+  "title": "Test Export",
+  "data": {
+    "journeys": [
+      {
+        "id": "507f1f77bcf86cd799439011",
+        "title": "Test Journey",
+        "steps": [
+          {
+            "id": "507f1f77bcf86cd799439012",
+            "journeyId": "507f1f77bcf86cd799439011",
+            "events": [
+              {
+                "type": "afterAction",
+                "info": {
+                  "automationStepId": "nonexistent000000000000"
+                }
+              }
+            ],
+            "action": {
+              "type": "setEnduserStatus",
+              "info": {}
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

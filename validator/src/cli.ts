@@ -73,7 +73,7 @@ program
       }
 
       // Run validation
-      const result = await validate(config, validateOptions, file);
+      const result = validate(config, validateOptions, file);
 
       // Generate fixed file if requested
       if (options.fixFile && result.errors.length > 0) {

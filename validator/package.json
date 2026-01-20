@@ -10,17 +10,22 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/cli.js",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@tellescope/schema": "1.238.0",
-    "@tellescope/validation": "1.238.0",
     "@tellescope/types-models": "1.238.0",
+    "@tellescope/validation": "1.238.0",
     "commander": "^11.0.0"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^4.0.17",
     "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "vitest": "^4.0.17"
   },
   "engines": {
     "node": ">=18.0.0"

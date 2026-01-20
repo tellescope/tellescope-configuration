@@ -172,11 +172,11 @@ function validateExportStructure(config: unknown): ValidationError[] {
 /**
  * Main validation function
  */
-export async function validate(
+export function validate(
   config: unknown,
   options?: ValidateOptions,
   inputPath?: string
-): Promise<ValidationResult> {
+): ValidationResult {
   const errors: ValidationError[] = [];
   const modelsValidated: ModelsSummary = {
     journeys: 0,
