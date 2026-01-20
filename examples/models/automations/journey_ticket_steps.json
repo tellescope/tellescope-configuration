@@ -1,0 +1,116 @@
+{
+  "exportedAt": "2026-01-20T17:58:35.407Z",
+  "organizationId": "67daece250de0de1e5738251",
+  "organizationName": "admin-deletion-test",
+  "version": "1.0",
+  "title": "admin-deletion-test-config-2026-01-20",
+  "data": {
+    "journeys": [
+      {
+        "id": "68d08e4886e7a0e39d229f3e",
+        "title": "Ticket OR Outcomes",
+        "defaultState": "New",
+        "states": [
+          {
+            "name": "New",
+            "priority": "N/A"
+          }
+        ],
+        "steps": [
+          {
+            "id": "68d08e5d1cc9fa731c634ad5",
+            "journeyId": "68d08e4886e7a0e39d229f3e",
+            "events": [
+              {
+                "type": "ticketCompleted",
+                "info": {
+                  "automationStepId": "68d08e501cc9fa731c634acc",
+                  "closedForReason": "2"
+                }
+              },
+              {
+                "type": "ticketCompleted",
+                "info": {
+                  "automationStepId": "68d08e501cc9fa731c634acc",
+                  "closedForReason": "3"
+                }
+              }
+            ],
+            "action": {
+              "type": "setEnduserStatus",
+              "info": {
+                "status": "2 OR 3"
+              },
+              "continueOnError": false
+            },
+            "flowchartUI": {
+              "x": 212.75,
+              "y": 203.25
+            },
+            "conditions": []
+          },
+          {
+            "id": "68d08e521cc9fa731c634ace",
+            "journeyId": "68d08e4886e7a0e39d229f3e",
+            "events": [
+              {
+                "type": "ticketCompleted",
+                "info": {
+                  "automationStepId": "68d08e501cc9fa731c634acc",
+                  "closedForReason": "1"
+                }
+              }
+            ],
+            "action": {
+              "type": "setEnduserStatus",
+              "info": {
+                "status": "1"
+              },
+              "continueOnError": false
+            },
+            "flowchartUI": {
+              "x": -149.75,
+              "y": 143.25
+            },
+            "conditions": []
+          },
+          {
+            "id": "68d08e501cc9fa731c634acc",
+            "journeyId": "68d08e4886e7a0e39d229f3e",
+            "events": [
+              {
+                "type": "onJourneyStart",
+                "info": {}
+              }
+            ],
+            "action": {
+              "continueOnError": false,
+              "type": "createTicket",
+              "info": {
+                "title": "first ticket",
+                "assignmentStrategy": {
+                  "type": "care-team-random",
+                  "info": {}
+                },
+                "closeReasons": [
+                  "1",
+                  "2",
+                  "3",
+                  "4"
+                ],
+                "defaultAssignee": "687154c62bc8dd288a23269f",
+                "closeOnFinishedActions": true,
+                "reminders": []
+              }
+            },
+            "conditions": [],
+            "flowchartUI": {
+              "x": 35.25188206281845,
+              "y": -9.400501883418258
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

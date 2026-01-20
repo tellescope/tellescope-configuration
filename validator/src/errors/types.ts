@@ -24,6 +24,8 @@ export type ValidationErrorCode =
   | 'INVALID_SCORING_RESPONSE'
   // General value errors
   | 'INVALID_VALUE'
+  // Journey-specific errors
+  | 'INVALID_STEP_REFERENCE'
   // Template-specific errors
   | 'INVALID_VARIABLE_SYNTAX'
   | 'UNCLOSED_VARIABLE'

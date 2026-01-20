@@ -1,0 +1,167 @@
+{
+  "exportedAt": "2026-01-20T17:58:57.515Z",
+  "organizationId": "67daece250de0de1e5738251",
+  "organizationName": "admin-deletion-test",
+  "version": "1.0",
+  "title": "admin-deletion-test-config-2026-01-20",
+  "data": {
+    "journeys": [
+      {
+        "id": "67ff11baacf57cec126923c4",
+        "title": "Age Branching",
+        "defaultState": "New",
+        "states": [
+          {
+            "name": "New",
+            "priority": "N/A"
+          }
+        ],
+        "steps": [
+          {
+            "id": "67ff11f12171a3af6b430974",
+            "journeyId": "67ff11baacf57cec126923c4",
+            "events": [
+              {
+                "type": "afterAction",
+                "info": {
+                  "automationStepId": "67ff11c16e21e7b98ab63b77",
+                  "delayInMS": 0,
+                  "delay": 0,
+                  "unit": "Seconds"
+                }
+              }
+            ],
+            "action": {
+              "continueOnError": false,
+              "type": "addEnduserTags",
+              "info": {
+                "tags": [
+                  "Over 50"
+                ]
+              }
+            },
+            "conditions": [],
+            "flowchartUI": {
+              "x": 261.25,
+              "y": 186.5
+            },
+            "enduserConditions": {
+              "$and": [
+                {
+                  "condition": {
+                    "Age": {
+                      "$gt": "50"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "67ff11dd2171a3af6b430971",
+            "journeyId": "67ff11baacf57cec126923c4",
+            "events": [
+              {
+                "type": "afterAction",
+                "info": {
+                  "automationStepId": "67ff11c16e21e7b98ab63b77",
+                  "delayInMS": 0,
+                  "delay": 0,
+                  "unit": "Seconds"
+                }
+              }
+            ],
+            "action": {
+              "continueOnError": false,
+              "type": "addEnduserTags",
+              "info": {
+                "tags": [
+                  "25-50"
+                ]
+              }
+            },
+            "conditions": [],
+            "flowchartUI": {
+              "x": 114.25,
+              "y": 286.5
+            },
+            "enduserConditions": {
+              "$and": [
+                {
+                  "condition": {
+                    "Age": {
+                      "$lt": "51"
+                    }
+                  }
+                },
+                {
+                  "condition": {
+                    "Age": {
+                      "$gt": "24"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "67ff11c22171a3af6b43096e",
+            "journeyId": "67ff11baacf57cec126923c4",
+            "events": [
+              {
+                "type": "afterAction",
+                "info": {
+                  "automationStepId": "67ff11c16e21e7b98ab63b77",
+                  "delayInMS": 0,
+                  "delay": 0,
+                  "unit": "Seconds"
+                }
+              }
+            ],
+            "action": {
+              "type": "addEnduserTags",
+              "info": {
+                "tags": [
+                  "Under 25"
+                ]
+              }
+            },
+            "flowchartUI": {
+              "x": -139.75,
+              "y": 211
+            },
+            "conditions": [],
+            "enduserConditions": {
+              "$and": [
+                {
+                  "condition": {
+                    "Age": {
+                      "$lt": 25
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "67ff11c16e21e7b98ab63b77",
+            "journeyId": "67ff11baacf57cec126923c4",
+            "events": [
+              {
+                "type": "onJourneyStart",
+                "info": {}
+              }
+            ],
+            "action": {
+              "type": "setEnduserStatus",
+              "info": {
+                "status": "Age Branching"
+              }
+            },
+            "conditions": []
+          }
+        ]
+      }
+    ]
+  }
+}

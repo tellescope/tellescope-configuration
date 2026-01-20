@@ -1,0 +1,49 @@
+{
+  "exportedAt": "2026-01-20T17:58:00.453Z",
+  "organizationId": "67daece250de0de1e5738251",
+  "organizationName": "admin-deletion-test",
+  "version": "1.0",
+  "title": "admin-deletion-test-config-2026-01-20",
+  "data": {
+    "journeys": [
+      {
+        "id": "69090ec37fbdcbb0ad48a312",
+        "title": "Set Timezone (Pacific)",
+        "defaultState": "New",
+        "states": [
+          {
+            "name": "New",
+            "priority": "N/A"
+          }
+        ],
+        "onIncomingEnduserCommunication": "",
+        "steps": [
+          {
+            "id": "69090ed87ff61b5ed4da8777",
+            "journeyId": "69090ec37fbdcbb0ad48a312",
+            "events": [
+              {
+                "type": "onJourneyStart",
+                "info": {}
+              }
+            ],
+            "action": {
+              "continueOnError": false,
+              "type": "setEnduserFields",
+              "info": {
+                "fields": [
+                  {
+                    "name": "timezone",
+                    "type": "Custom Value",
+                    "value": "US/Pacific"
+                  }
+                ]
+              }
+            },
+            "conditions": []
+          }
+        ]
+      }
+    ]
+  }
+}
