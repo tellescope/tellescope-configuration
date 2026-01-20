@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import * as path from 'path';
-import { validate } from '../src';
+import { validate, extractJson } from '../src';
 import { EvalDefinition, EvalResult } from './eval-types';
 import { checkExpectations } from './matchers';
 
@@ -89,40 +89,4 @@ function escapeShellArg(arg: string): string {
   return arg.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\$/g, '\\$').replace(/`/g, '\\`');
 }
 
-/**
- * Extract JSON from Claude's output, handling potential markdown code blocks
- */
-export function extractJson(output: string): unknown | null {
-  const trimmed = output.trim();
-
-  // Try parsing raw output first (most common case when Claude follows instructions)
-  try {
-    return JSON.parse(trimmed);
-  } catch {
-    // Not raw JSON, continue
-  }
-
-  // Try extracting from markdown code block
-  const jsonBlockMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (jsonBlockMatch) {
-    try {
-      return JSON.parse(jsonBlockMatch[1].trim());
-    } catch {
-      // Not valid JSON in code block
-    }
-  }
-
-  // Try finding JSON object in output (greedy match from first { to last })
-  const firstBrace = trimmed.indexOf('{');
-  const lastBrace = trimmed.lastIndexOf('}');
-  if (firstBrace !== -1 && lastBrace > firstBrace) {
-    const jsonCandidate = trimmed.substring(firstBrace, lastBrace + 1);
-    try {
-      return JSON.parse(jsonCandidate);
-    } catch {
-      // Not valid JSON
-    }
-  }
-
-  return null;
-}
+// extractJson is now imported from '../src' (moved to src/utils/json-extractor.ts)

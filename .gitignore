@@ -5,6 +5,12 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# TypeScript compiled output (in-place compilation)
+validator/**/*.js
+validator/**/*.js.map
+validator/**/*.d.ts
+validator/**/*.d.ts.map
+
 # Logs
 *.log
 npm-debug.log*

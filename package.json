@@ -1,0 +1,17 @@
+{
+  "name": "tellescope-configuration",
+  "private": true,
+  "description": "Tellescope configuration examples, schemas, and validation tools",
+  "scripts": {
+    "generate": "npx ts-node generate-config.ts",
+    "test": "npm --prefix validator test",
+    "test:unit": "npm --prefix validator run test:unit",
+    "eval": "npm --prefix validator run eval",
+    "validate": "npm --prefix validator start"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}

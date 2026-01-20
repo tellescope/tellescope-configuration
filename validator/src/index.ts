@@ -29,3 +29,4 @@ export { applyFix, applyAutoFixes } from './errors/suggestions';
 
 // Utility exports
 export { buildPath, appendPath, safeStringify } from './utils/path-builder';
+export { extractJson } from './utils/json-extractor';
