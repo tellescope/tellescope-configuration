@@ -1,0 +1,21 @@
+{
+  "exportedAt": "2026-01-20T17:50:46.245Z",
+  "organizationId": "63a0d6be40e38ba9e899a490",
+  "organizationName": "1 Tellescope Unresett",
+  "version": "1.0",
+  "title": "sms_template",
+  "data": {
+    "templates": [
+      {
+        "id": "691b6dd82b08ce06fd43459a",
+        "title": "SMS Test 1",
+        "editorState": "{\"blocks\":[{\"key\":\"5e1qc\",\"text\":\"SMS Test 1\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
+        "html": "<span>SMS Test 1</span><br/>",
+        "isMarketing": false,
+        "message": "SMS Test 1",
+        "subject": "SMS Test 1",
+        "type": "enduser"
+      }
+    ]
+  }
+}

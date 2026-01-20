@@ -1,0 +1,30 @@
+{
+  "exportedAt": "2026-01-20T17:52:33.819Z",
+  "organizationId": "63a0d6be40e38ba9e899a490",
+  "organizationName": "1 Tellescope Unresett",
+  "version": "1.0",
+  "title": "email",
+  "data": {
+    "templates": [
+      {
+        "id": "68e568ed86e7a0e39d26b13f",
+        "title": "Abandoned Form - First Reminder",
+        "forChannels": [
+          "Email"
+        ],
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <title>Complete Your Form - Just a Quick Reminder</title>\n  <style>\n    @media only screen and (max-width: 600px) {\n      .container { width: 100% !important; }\n      .mobile-padding { padding: 20px !important; }\n    }\n  </style>\n</head>\n<body style=\"margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f4;\">\n  <table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"background-color: #f4f4f4;\">\n    <tr>\n      <td style=\"padding: 40px 20px;\">\n        <table role=\"presentation\" class=\"container\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"600\" style=\"margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);\">\n          <tr>\n            <td class=\"mobile-padding\" style=\"padding: 40px 30px;\">\n              <h1 style=\"margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #1a1a1a;\">Quick Reminder</h1>\n              <p style=\"margin: 0 0 16px 0; font-size: 16px; line-height: 1.5; color: #4a4a4a;\">Hi {{enduser.fname}},</p>\n              <p style=\"margin: 0 0 16px 0; font-size: 16px; line-height: 1.5; color: #4a4a4a;\">We noticed you started filling out a form but didn't finish. No worries—it happens!</p>\n              <p style=\"margin: 0 0 24px 0; font-size: 16px; line-height: 1.5; color: #4a4a4a;\">We wanted to send you a quick reminder in case you'd like to complete it. It only takes a few minutes, and we're here if you need any help.</p>\n              <table role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\" style=\"margin: 0 0 24px 0; background-color: #f0f8ff; border-radius: 6px; border-left: 4px solid #007bff;\">\n                <tr>\n                  <td style=\"padding: 16px 20px;\">\n                    <p style=\"margin: 0; font-size: 14px; line-height: 1.5; color: #1a5490;\"><strong>Helpful tip:</strong> It only takes a few minutes to complete!</p>\n                  </td>\n                </tr>\n              </table>\n              <p style=\"margin: 0 0 8px 0; font-size: 16px; line-height: 1.5; color: #4a4a4a;\">Looking forward to hearing from you!</p>\n              <p style=\"margin: 0 0 8px 0; font-size: 16px; line-height: 1.5; color: #4a4a4a;\">Best regards,<br>{{sender.fname}}</p>\n              <div style=\"margin: 16px 0 0 0; padding-top: 16px; border-top: 1px solid #e0e0e0; font-size: 14px; line-height: 1.5; color: #6a6a6a;\">{{SIGNATURE.EMAIL}}</div>\n            </td>\n          </tr>\n        </table>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>",
+        "isMarketing": true,
+        "message": "Hi {{enduser.fname}},\n\nWe noticed you started filling out a form but didn't finish. No worries—it happens!\n\nWe wanted to send you a quick reminder in case you'd like to complete it. It only takes a few minutes, and we're here if you need any help.\n\nLooking forward to hearing from you!\n\nBest regards,\n{{sender.fname}}\n{{SIGNATURE}}",
+        "mode": "html",
+        "subject": "Complete Your Form - Just a Quick Reminder",
+        "tags": [
+          "abandoned-cart",
+          "reminder",
+          "first",
+          "24h"
+        ],
+        "type": "enduser"
+      }
+    ]
+  }
+}

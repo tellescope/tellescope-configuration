@@ -26,11 +26,15 @@ interface MessageTemplateLike {
   html?: string;
   type?: string;
   mode?: string;
+  forChannels?: string[];
+  isMarketing?: boolean;
+  tags?: string[];
   [key: string]: unknown;
 }
 
 const VALID_TEMPLATE_TYPES = ['enduser', 'Reply', 'team'];
 const VALID_TEMPLATE_MODES = ['html', 'richtext'];
+const VALID_CHANNELS = ['Email', 'SMS', 'Chat'];
 
 /**
  * Validate template variable syntax
@@ -65,12 +69,27 @@ function validateTemplateVariables(content: string, path: string): ValidationErr
     }
   }
 
-  // Check for malformed variable syntax
-  const malformedPattern = /\{[^{].*?\}(?!\})/g;
+  // Check for malformed variable syntax (single braces that look like template variables)
+  // Pattern matches {content} but not {{content}} - excludes CSS by checking content
+  const malformedPattern = /\{([^{}]*?)\}(?!\})/g;
   while ((match = malformedPattern.exec(content)) !== null) {
-    // Skip if it's inside a proper {{...}}
+    // Skip if it's inside a proper {{...}} (check character before)
     const before = content.substring(Math.max(0, match.index - 1), match.index);
-    if (before !== '{') {
+    if (before === '{') {
+      continue;
+    }
+
+    // Extract the inner content
+    const inner = match[1].trim();
+
+    // Skip if it looks like CSS (contains : or ; which are CSS syntax)
+    if (inner.includes(':') || inner.includes(';')) {
+      continue;
+    }
+
+    // Only flag if it looks like a template variable name (letters, dots, underscores, brackets)
+    // Valid variable patterns: enduser.fname, sender, forms.123.link:text, etc.
+    if (/^[a-zA-Z_][a-zA-Z0-9_.\[\]:]*$/.test(inner)) {
       errors.push({
         code: 'INVALID_VARIABLE_SYNTAX',
         message: `Possible malformed variable syntax: ${match[0]} (should use double braces {{...}})`,
@@ -272,6 +291,74 @@ function validateTemplate(template: unknown, index: number): ValidationError[] {
         severity: 'error',
         expected: VALID_TEMPLATE_MODES.join(' | '),
         actual: safeStringify(t.mode),
+      });
+    }
+  }
+
+  // Validate forChannels (if present)
+  if (t.forChannels !== undefined && t.forChannels !== null) {
+    if (!Array.isArray(t.forChannels)) {
+      errors.push({
+        code: 'INVALID_TYPE',
+        message: 'MessageTemplate forChannels must be an array',
+        path: appendPath(basePath, 'forChannels'),
+        severity: 'error',
+        expected: 'array',
+        actual: typeof t.forChannels,
+      });
+    } else {
+      t.forChannels.forEach((channel, i) => {
+        if (!VALID_CHANNELS.includes(channel)) {
+          errors.push({
+            code: 'INVALID_ENUM_VALUE',
+            message: `MessageTemplate forChannels[${i}] must be one of: ${VALID_CHANNELS.join(', ')}`,
+            path: appendPath(basePath, 'forChannels', i),
+            severity: 'error',
+            expected: VALID_CHANNELS.join(' | '),
+            actual: safeStringify(channel),
+          });
+        }
+      });
+    }
+  }
+
+  // Validate isMarketing (if present)
+  if (t.isMarketing !== undefined && t.isMarketing !== null) {
+    if (typeof t.isMarketing !== 'boolean') {
+      errors.push({
+        code: 'INVALID_TYPE',
+        message: 'MessageTemplate isMarketing must be a boolean',
+        path: appendPath(basePath, 'isMarketing'),
+        severity: 'error',
+        expected: 'boolean',
+        actual: typeof t.isMarketing,
+      });
+    }
+  }
+
+  // Validate tags (if present)
+  if (t.tags !== undefined && t.tags !== null) {
+    if (!Array.isArray(t.tags)) {
+      errors.push({
+        code: 'INVALID_TYPE',
+        message: 'MessageTemplate tags must be an array',
+        path: appendPath(basePath, 'tags'),
+        severity: 'error',
+        expected: 'array',
+        actual: typeof t.tags,
+      });
+    } else {
+      t.tags.forEach((tag, i) => {
+        if (typeof tag !== 'string') {
+          errors.push({
+            code: 'INVALID_TYPE',
+            message: `MessageTemplate tags[${i}] must be a string`,
+            path: appendPath(basePath, 'tags', i),
+            severity: 'error',
+            expected: 'string',
+            actual: typeof tag,
+          });
+        }
       });
     }
   }
