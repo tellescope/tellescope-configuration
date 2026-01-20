@@ -67,8 +67,40 @@ interface Form {
   canvasId?: string
   isNonVisitElationNote?: boolean
   elationVisitNoteType?: string
+
+  // Scoring (for assessment forms)
+  scoring?: FormScoring[]                 // Score calculation rules
+  version?: string                        // Form version (e.g., "v2")
+  ipAddressCustomField?: string           // Custom field to store IP address
 }
 ```
+
+### Form Scoring
+
+For assessment forms (like PHQ-9, GAD-7), the `scoring` array defines how responses are converted to numeric scores.
+
+```typescript
+interface FormScoring {
+  title: string                           // Score category name (e.g., "PHQ-9 Score")
+  fieldId: string                         // Field being scored (MongoDB ObjectId)
+  response: string                        // Response text that triggers this score
+  score: number                           // Point value for this response
+}
+```
+
+#### Scoring Example (PHQ-9)
+```json
+{
+  "scoring": [
+    { "title": "PHQ-9 Score", "fieldId": "507f...", "response": "Not at all", "score": 0 },
+    { "title": "PHQ-9 Score", "fieldId": "507f...", "response": "Several days", "score": 1 },
+    { "title": "PHQ-9 Score", "fieldId": "507f...", "response": "More than half the days", "score": 2 },
+    { "title": "PHQ-9 Score", "fieldId": "507f...", "response": "Nearly every day", "score": 3 }
+  ]
+}
+```
+
+**Pattern:** Create one scoring entry per field per response option. The total score is calculated by summing all matching scores based on the patient's responses.
 
 ---
 
@@ -208,8 +240,8 @@ Field options configure validation, display, and behavior.
   radio?: boolean                         // true=radio, false=checkbox
   other?: boolean                         // Include "Other" option
   optionDetails?: Array<{                 // Option descriptions
-    label: string
-    description: string
+    option: string                        // Option text (must match choices)
+    description: string                   // Description shown below option
   }>
   autoAdvance?: boolean                   // Auto-advance on selection
 }

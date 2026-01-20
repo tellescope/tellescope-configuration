@@ -33,7 +33,7 @@ interface Journey {
 
 interface JourneyState {
   name: string                            // State identifier
-  priority: 'High' | 'Medium' | 'Low'     // Display priority
+  priority: 'High' | 'Medium' | 'Low' | 'N/A'  // Display priority
   requiresFollowup?: boolean              // Flag for care team
   description?: string                    // State description
 }
@@ -86,16 +86,83 @@ interface AutomationStep {
 
   // Optional
   conditions?: AutomationCondition[]      // State-based conditions
-  enduserConditions?: object              // Patient filter conditions
-  continueOnError?: boolean               // Continue journey on failure
+  enduserConditions?: object              // Patient filter conditions (see Query Syntax below)
+  continueOnError?: boolean               // Continue journey on failure (can also be in action.info)
   tags?: string[]                         // Step tags
-  flowchartUI?: FlowchartUI               // UI positioning data
+  flowchartUI?: FlowchartUI               // UI positioning data (see below)
+}
+
+interface FlowchartUI {
+  x: number                               // Horizontal position (can be negative)
+  y: number                               // Vertical position (can be negative)
 }
 
 interface AutomationCondition {
   type: 'state'
   info: {
     state: string                         // Required state name
+  }
+}
+```
+
+### Enduser Conditions (Patient Filters)
+
+The `enduserConditions` field uses MongoDB-style query syntax to filter which patients trigger the step.
+
+```typescript
+interface EnduserConditions {
+  $and?: ConditionGroup[]                 // All conditions must match
+  $or?: ConditionGroup[]                  // Any condition must match
+}
+
+interface ConditionGroup {
+  condition: {
+    [fieldName: string]: ComparisonOperator
+  }
+}
+
+// Comparison operators
+interface ComparisonOperator {
+  $gt?: string | number                   // Greater than
+  $gte?: string | number                  // Greater than or equal
+  $lt?: string | number                   // Less than
+  $lte?: string | number                  // Less than or equal
+  $eq?: string | number                   // Equals
+}
+```
+
+#### Examples
+
+**Age greater than 50:**
+```json
+{
+  "enduserConditions": {
+    "$and": [
+      { "condition": { "Age": { "$gt": "50" } } }
+    ]
+  }
+}
+```
+
+**Age between 25 and 50:**
+```json
+{
+  "enduserConditions": {
+    "$and": [
+      { "condition": { "Age": { "$gt": "24" } } },
+      { "condition": { "Age": { "$lt": "51" } } }
+    ]
+  }
+}
+```
+
+**Custom field equals value:**
+```json
+{
+  "enduserConditions": {
+    "$and": [
+      { "condition": { "riskLevel": { "$eq": "high" } } }
+    ]
   }
 }
 ```
@@ -148,9 +215,9 @@ Fires after a delay from a previous step.
   "type": "afterAction",
   "info": {
     "automationStepId": "507f...",        // Previous step ID
-    "delayInMS": 86400000,                // Delay in milliseconds
-    "delay": 1,                           // Human-readable delay
-    "unit": "Days",                       // Days | Hours | Minutes
+    "delayInMS": 86400000,                // Delay in milliseconds (takes precedence)
+    "delay": 1,                           // Human-readable delay value
+    "unit": "Days",                       // Days | Hours | Minutes | Seconds
     "officeHoursOnly": true,              // Only during business hours
     "useEnduserTimezone": true,           // Use patient timezone
     "cancelConditions": [                 // Cancel if these occur
@@ -192,10 +259,13 @@ Fires when a ticket is completed.
 {
   "type": "ticketCompleted",
   "info": {
-    "automationStepId": "507f..."
+    "automationStepId": "507f...",        // Step that created the ticket
+    "closedForReason": "1"                // Optional: filter by close reason
   }
 }
 ```
+
+**Note:** Use `closedForReason` to trigger different actions based on how the ticket was closed. The value corresponds to the close reason defined in the ticket's `closeReasons` array.
 
 #### waitForTrigger
 Waits for an automation trigger to fire.
@@ -460,7 +530,15 @@ Fires when a new patient is created.
   "type": "createTicket",
   "info": {
     "title": "Follow-up required",
-    "priority": "High"
+    "priority": "High",
+    "assignmentStrategy": {               // Optional: how to assign the ticket
+      "type": "care-team-random",         // care-team-random | round-robin | specific-user
+      "info": {}
+    },
+    "defaultAssignee": "507f...",         // Optional: fallback assignee user ID
+    "closeReasons": ["Resolved", "No response", "Referred"],  // Optional: close reason options
+    "closeOnFinishedActions": true,       // Optional: auto-close when actions complete
+    "reminders": []                       // Optional: reminder configuration
   }
 }
 ```
@@ -703,3 +781,108 @@ Fires when a new patient is created.
   }
 }
 ```
+
+### Journey with Age-Based Branching
+
+This example shows how to use `enduserConditions` to branch patients into different paths based on their age.
+
+```json
+{
+  "data": {
+    "journeys": [
+      {
+        "id": "60d5ec49c1234567890abcd6",
+        "title": "Age-Based Routing",
+        "defaultState": "New",
+        "states": [
+          { "name": "New", "priority": "N/A" }
+        ],
+        "steps": [
+          {
+            "id": "60d5ec49c1234567890abcd7",
+            "journeyId": "60d5ec49c1234567890abcd6",
+            "events": [{ "type": "onJourneyStart", "info": {} }],
+            "action": {
+              "type": "setEnduserStatus",
+              "info": { "status": "Processing" }
+            },
+            "conditions": []
+          },
+          {
+            "id": "60d5ec49c1234567890abcd8",
+            "journeyId": "60d5ec49c1234567890abcd6",
+            "events": [{
+              "type": "afterAction",
+              "info": {
+                "automationStepId": "60d5ec49c1234567890abcd7",
+                "delayInMS": 0,
+                "delay": 0,
+                "unit": "Seconds"
+              }
+            }],
+            "action": {
+              "type": "addEnduserTags",
+              "info": { "tags": ["Senior"] }
+            },
+            "enduserConditions": {
+              "$and": [{ "condition": { "Age": { "$gt": "65" } } }]
+            },
+            "flowchartUI": { "x": 200, "y": 150 }
+          },
+          {
+            "id": "60d5ec49c1234567890abcd9",
+            "journeyId": "60d5ec49c1234567890abcd6",
+            "events": [{
+              "type": "afterAction",
+              "info": {
+                "automationStepId": "60d5ec49c1234567890abcd7",
+                "delayInMS": 0,
+                "delay": 0,
+                "unit": "Seconds"
+              }
+            }],
+            "action": {
+              "type": "addEnduserTags",
+              "info": { "tags": ["Adult"] }
+            },
+            "enduserConditions": {
+              "$and": [
+                { "condition": { "Age": { "$gt": "17" } } },
+                { "condition": { "Age": { "$lte": "65" } } }
+              ]
+            },
+            "flowchartUI": { "x": 0, "y": 150 }
+          },
+          {
+            "id": "60d5ec49c123456789abcda",
+            "journeyId": "60d5ec49c1234567890abcd6",
+            "events": [{
+              "type": "afterAction",
+              "info": {
+                "automationStepId": "60d5ec49c1234567890abcd7",
+                "delayInMS": 0,
+                "delay": 0,
+                "unit": "Seconds"
+              }
+            }],
+            "action": {
+              "type": "addEnduserTags",
+              "info": { "tags": ["Minor"] }
+            },
+            "enduserConditions": {
+              "$and": [{ "condition": { "Age": { "$lte": "17" } } }]
+            },
+            "flowchartUI": { "x": -200, "y": 150 }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Key points:**
+- Multiple steps can fire from the same `afterAction` event with different `enduserConditions`
+- Only the step(s) whose conditions match the patient will execute
+- Use `flowchartUI` to position steps visually in the journey builder
+- `delayInMS: 0` with `unit: "Seconds"` means immediate execution after the previous step

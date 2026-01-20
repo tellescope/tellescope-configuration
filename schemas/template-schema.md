@@ -27,12 +27,12 @@ interface MessageTemplate {
 
   // Optional Content
   html?: string                           // HTML content (max 100,000 chars)
-  editorState?: string                    // Rich text editor state
+  editorState?: string                    // Draft.js editor state (JSON-stringified)
 
   // Categorization
   type?: 'enduser' | 'Reply' | 'team'     // Recipient type
   mode?: 'html' | 'richtext'              // Rendering mode
-  forChannels?: string[]                  // ['Email', 'SMS', 'Chat']
+  forChannels?: string[]                  // ['Email', 'SMS', 'Chat'] - optional, filters where template appears
   forRoles?: string[]                     // Limit to user roles
   forEntityTypes?: string[]               // Limit to entity types
   tags?: string[]                         // Searchable tags
@@ -62,6 +62,30 @@ interface MessageTemplate {
   "isMarketing": false
 }
 ```
+
+### Field Notes
+
+**forChannels**: Optional array that filters where the template appears in the UI. If omitted, the template is available for all channels. Common values: `"Email"`, `"SMS"`, `"Chat"`.
+
+**editorState**: JSON-stringified Draft.js editor state used by the rich text editor. Format:
+```json
+{
+  "blocks": [
+    {
+      "key": "abc123",
+      "text": "Message content",
+      "type": "unstyled",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [],
+      "data": {}
+    }
+  ],
+  "entityMap": {}
+}
+```
+
+**subject**: Required for all templates. For SMS-only templates, can be set to an empty string `""` or a short identifier.
 
 ---
 
