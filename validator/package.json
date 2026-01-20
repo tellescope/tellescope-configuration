@@ -1,0 +1,28 @@
+{
+  "name": "tellescope-validate",
+  "version": "1.0.0",
+  "description": "Validator for Tellescope configuration exports",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "tellescope-validate": "./bin/tellescope-validate"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@tellescope/schema": "1.238.0",
+    "@tellescope/validation": "1.238.0",
+    "@tellescope/types-models": "1.238.0",
+    "commander": "^11.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

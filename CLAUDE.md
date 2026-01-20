@@ -161,6 +161,88 @@ Common field types:
 
 See [form-schema.md](schemas/form-schema.md) for all 34 field types.
 
+## Configuration Validator
+
+The repository includes a validator that checks generated configurations for errors. Use it to validate your work before importing.
+
+### Running the Validator
+
+```bash
+# First time setup (from repository root)
+cd validator && npm install && npm run build && cd ..
+
+# Validate a configuration file
+node validator/dist/cli.js path/to/config.json
+```
+
+### Validator Output
+
+The validator outputs JSON with:
+- `valid`: Whether the configuration passed validation
+- `errors`: Array of validation errors with paths and fix suggestions
+- `summary`: Count of errors/warnings and models validated
+
+### Error Format
+
+Each error includes:
+```json
+{
+  "code": "STRING_TOO_LONG",
+  "message": "Journey title exceeds maximum length of 100 characters",
+  "path": "data.journeys[0].title",
+  "severity": "error",
+  "expected": "string with max 100 characters",
+  "actual": "...",
+  "suggestion": {
+    "type": "replace",
+    "targetPath": "data.journeys[0].title",
+    "value": "Truncated title...",
+    "description": "Truncate to 100 characters",
+    "confidence": "low"
+  }
+}
+```
+
+### Claude Code Workflow
+
+When generating configurations:
+1. Generate the configuration JSON
+2. Run: `node validator/dist/cli.js config.json`
+3. Parse the JSON output for errors
+4. For each error:
+   - Use `error.path` to locate the issue
+   - Apply `error.suggestion` if confidence is high
+   - Fix manually if confidence is low
+5. Re-run validator until `valid: true`
+
+### Common Error Codes
+
+| Code | Description |
+|------|-------------|
+| `STRING_TOO_LONG` | Field exceeds max length (title: 100, message: 100k) |
+| `INVALID_OBJECT_ID` | ID is not a valid 24-character hex string |
+| `MISSING_REQUIRED_FIELD` | Required field is missing or empty |
+| `REFERENCE_NOT_FOUND` | ID references a model that doesn't exist in export |
+| `INVALID_ENUM_VALUE` | Value is not in the allowed set |
+| `UNCLOSED_VARIABLE` | Template variable missing closing `}}` |
+| `FIELD_COUNT_MISMATCH` | Form numFields doesn't match actual field count |
+
+### CLI Options
+
+```bash
+# Output to file
+node validator/dist/cli.js config.json -o results.json
+
+# Validate only specific models
+node validator/dist/cli.js config.json --only journeys,forms
+
+# Generate auto-fixed config (high confidence fixes only)
+node validator/dist/cli.js config.json --fix-file fixed-config.json
+
+# Skip warnings
+node validator/dist/cli.js config.json --no-warnings
+```
+
 ## Best Practices
 
 1. **Use descriptive titles**: Journeys, forms, and templates should have clear, descriptive names
@@ -168,3 +250,4 @@ See [form-schema.md](schemas/form-schema.md) for all 34 field types.
 3. **Include descriptions**: Help future maintainers understand purpose
 4. **Test incrementally**: Import small configurations first to validate
 5. **Document dependencies**: Note which forms/templates are used by which automations
+6. **Validate before importing**: Always run the validator on generated configurations
