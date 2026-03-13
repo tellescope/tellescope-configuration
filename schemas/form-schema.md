@@ -157,8 +157,8 @@ interface FormField {
 | `number` | Numeric input | `min`, `max` |
 | `email` | Email address | - |
 | `phone` | Phone number | - |
-| `date` | Date picker | `min`, `max`, `useDatePicker` |
-| `dateString` | Date as string | - |
+| `date` | Date & Time picker | `min`, `max`, `useDatePicker` |
+| `dateString` | Date only (no time) | - |
 | `Time` | Time picker | - |
 | `Timezone` | Timezone selector | - |
 | `rating` | Numeric rating | `min`, `max` |
@@ -210,8 +210,65 @@ interface FormField {
 | `description` | Display description text |
 | `Hidden Value` | Hidden field with value |
 | `Redirect` | Redirect to URL |
-| `Question Group` | Group of related fields |
+| `Question Group` | Group of related sub-fields (see below) |
 | `Table Input` | Table-based input |
+
+#### Question Group
+
+Groups multiple sub-fields into a single page/card in the form flow. Sub-fields are referenced by ID in the Question Group's `options.subFields` array.
+
+**Important:** Sub-fields should NOT appear as separate top-level fields in the form's field chain. They only exist as sub-fields of the group. The next field in the flow chains from the Question Group's ID, not from the last sub-field.
+
+```json
+{
+  "id": "660000000000000000000033",
+  "title": "Consent Acknowledgments",
+  "type": "Question Group",
+  "htmlDescription": "<p>Please review and agree to each of the following statements.</p>",
+  "options": {
+    "subFields": [
+      { "id": "660000000000000000000034" },
+      { "id": "660000000000000000000035" },
+      { "id": "660000000000000000000036" }
+    ]
+  },
+  "previousFields": [
+    { "type": "after", "info": { "fieldId": "<previous-field>" } }
+  ]
+}
+```
+
+#### Address Field
+
+The built-in `Address` type collects street, city, state, and ZIP in a single question. Do not create separate text fields for each address component.
+
+- Set `intakeField: "address"` to map to the patient record
+- States are stored as **2-letter abbreviations** (e.g., "SC", "AL", "CA")
+- For state-based conditional logic, reference the Address field ID in `compoundLogic` conditions
+
+```json
+{
+  "title": "What is your address?",
+  "type": "Address",
+  "intakeField": "address"
+}
+```
+
+#### Date vs DateString
+
+| Type | UI Label | Use Case |
+|------|----------|----------|
+| `date` | "Date & Time" | Appointments, timestamps |
+| `dateString` | "Date" | Date of Birth, date-only fields |
+
+For Date of Birth, always use `dateString` with `intakeField: "dateOfBirth"`:
+```json
+{
+  "title": "Date of Birth",
+  "type": "dateString",
+  "intakeField": "dateOfBirth"
+}
+```
 
 ---
 
@@ -296,6 +353,19 @@ Field options configure validation, display, and behavior.
 }
 ```
 
+### Display/Behavior Options
+
+```typescript
+{
+  disableNext?: boolean                   // Prevent advancing past this field (hard stops)
+  disableGoBack?: boolean                 // Prevent going back from this field
+  subFields?: Array<{ id: string }>       // Sub-field IDs for Question Group fields
+  saveIntakeOnPartial?: boolean           // Save intake data on partial submission
+}
+```
+
+**Important:** `disableNext` and `disableGoBack` must be inside the `options` object, not at the field root level. Placing them at root level will be silently ignored on import.
+
 ### EHR Integration Options
 
 ```typescript
@@ -316,9 +386,10 @@ Field options configure validation, display, and behavior.
 
 ### PreviousFormField Types
 
-Control field ordering and conditional display.
+Control field ordering and conditional display. Each field's `previousFields` array defines when and where it appears in the form flow.
 
 #### Root (First Field)
+Every form must have exactly one root field — the entry point of the form.
 ```json
 {
   "type": "root",
@@ -326,7 +397,8 @@ Control field ordering and conditional display.
 }
 ```
 
-#### After (Sequential)
+#### After (Sequential / Default Branch)
+Always show this field after the referenced field, regardless of response. This is the "Default" branch in the UI.
 ```json
 {
   "type": "after",
@@ -336,8 +408,8 @@ Control field ordering and conditional display.
 }
 ```
 
-#### Previous Equals (Conditional)
-Show field only if previous field has specific value.
+#### Previous Equals (Conditional Branch)
+Show field only if the referenced field's response matches a specific value. Multiple `previousEquals` entries in the same `previousFields` array act as OR logic (field shows if **any** match).
 ```json
 {
   "type": "previousEquals",
@@ -348,20 +420,184 @@ Show field only if previous field has specific value.
 }
 ```
 
-#### Compound Logic (Complex Conditions)
+**Multi-source merge-back pattern:** A field can have multiple `previousFields` entries of different types to merge branches back together:
+```json
+{
+  "previousFields": [
+    { "type": "after", "info": { "fieldId": "<end-of-sub-branch>" } },
+    { "type": "previousEquals", "info": { "fieldId": "<skip-field>", "equals": "No" } }
+  ]
+}
+```
+
+**Important:** `previousEquals` cannot express complex OR logic on the same source field (e.g., "field equals A OR B"). For that, use `compoundLogic`.
+
+#### Compound Logic (Advanced Conditions)
+
+Used for complex conditional branching: multi-value OR/AND, calculated field comparisons, and multi-field conditions.
+
+**UI mapping:** Shows as "Advanced" Logic Type in the form builder with a priority dropdown and condition rows.
+
+```typescript
+{
+  type: "compoundLogic",
+  info: {
+    fieldId: string,    // The source field ID being evaluated
+    priority: number,   // Higher number = takes precedence when multiple conditions match
+    label: string,      // Auto-generated label describing the condition
+    condition: CompoundFilter  // The condition tree (see below)
+  }
+}
+```
+
+##### CompoundFilter Format
+
+The `condition` object uses Tellescope's `CompoundFilter` type. It is a recursive tree of `$or`, `$and`, and `condition` nodes.
+
+```typescript
+// From @tellescope/types-models
+type CompoundFilter = {
+  condition?: BasicFilter      // Leaf node: { "<fieldId>": "<value>" }
+  $or?: CompoundFilter[]       // OR: true if ANY child matches
+  $and?: CompoundFilter[]      // AND: true if ALL children match
+}
+
+type BasicFilter = {
+  [fieldId: string]: string | number | null
+    | { $gt: number }
+    | { $lt: number }
+    | { $exists: boolean }
+    | { $contains: string | number }
+    | { $doesNotContain: string | number }
+}
+```
+
+**Key rules:**
+- Each leaf condition is: `{ "condition": { "<fieldId>": "<value>" } }`
+- For equality: value is a string (e.g., `"SC"`, `"Type 1 diabetes"`)
+- For operators: value is an operator object (e.g., `{ "$lt": 18 }`)
+- **Do NOT wrap `$or` branches in `$and`** — this changes the logic from OR to AND in the UI
+- For multi-select (checkbox) fields, equality checks work because the engine uses `Array.includes()`
+
+##### Calculated Fields in Conditions
+
+Instead of a field ID, use these special identifiers to reference computed values:
+
+| Identifier | Description | Operator Example |
+|-----------|-------------|-----------------|
+| `Calculated: Age` | Age computed from DOB field | `{ "$lt": 18 }` |
+| `Calculated: BMI` | BMI from Height + Weight fields | `{ "$gt": 30 }` |
+| `Calculated: Score` | Form scoring total | `{ "$gt": 10 }` |
+| `Gender` | Patient gender value | `"Male"` |
+| `State` | Patient state value | `"TX"` |
+
+**Note:** `Calculated: Age` requires a `dateString` field with `computedValueKey: "Date of Birth"` in the form. The age is computed using `age_for_dob_mmddyyyy()`.
+
+##### Example: Age Gate (Calculated Age < 18)
 ```json
 {
   "type": "compoundLogic",
   "info": {
-    "fieldId": "507f1f77bcf86cd799439011",
-    "priority": 1,
-    "label": "Show if high risk",
+    "fieldId": "660000000000000000000009",
+    "priority": 5,
+    "label": "(Calculated: Age Less Than 18)",
     "condition": {
-      // Complex filter object
+      "$or": [
+        {
+          "condition": {
+            "Calculated: Age": { "$lt": 18 }
+          }
+        }
+      ]
     }
   }
 }
 ```
+
+##### Example: State-Based Restriction (Address Field)
+When using the built-in `Address` field type, states are 2-letter abbreviations.
+```json
+{
+  "type": "compoundLogic",
+  "info": {
+    "fieldId": "66000000000000000000000b",
+    "priority": 5,
+    "label": "(SC OR AL OR CA)",
+    "condition": {
+      "$or": [
+        { "condition": { "66000000000000000000000b": "SC" } },
+        { "condition": { "66000000000000000000000b": "AL" } },
+        { "condition": { "66000000000000000000000b": "CA" } }
+      ]
+    }
+  }
+}
+```
+
+##### Example: Multi-Select Branching with Dual Priorities
+For checkbox fields where different selections lead to different branches, use separate `compoundLogic` entries with different priorities. Higher priority wins when multiple conditions match.
+
+**Hard stop branch (priority 1 — loses to the explain branch):**
+```json
+{
+  "type": "compoundLogic",
+  "info": {
+    "fieldId": "66000000000000000000001d",
+    "priority": 1,
+    "label": "(Type 1 diabetes OR Gallbladder disease OR Pancreatitis OR ...)",
+    "condition": {
+      "$or": [
+        { "condition": { "66000000000000000000001d": "Type 1 diabetes" } },
+        { "condition": { "66000000000000000000001d": "Gallbladder disease" } },
+        { "condition": { "66000000000000000000001d": "Pancreatitis" } }
+      ]
+    }
+  }
+}
+```
+
+**Continue branch (priority 5 — wins over hard stop when both match):**
+```json
+{
+  "type": "compoundLogic",
+  "info": {
+    "fieldId": "66000000000000000000001d",
+    "priority": 5,
+    "label": "(Type 2 diabetes OR High blood pressure OR ...)",
+    "condition": {
+      "$or": [
+        { "condition": { "66000000000000000000001d": "Type 2 diabetes" } },
+        { "condition": { "66000000000000000000001d": "High blood pressure" } }
+      ]
+    }
+  }
+}
+```
+
+### Hard Stop Pattern
+
+A "hard stop" prevents form progression using a `description` field with `disableNext` and no fields chaining from it:
+
+```json
+{
+  "id": "660000000000000000000100",
+  "title": "We're unable to proceed with this program based on your responses.",
+  "type": "description",
+  "isOptional": true,
+  "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+  "options": {
+    "disableNext": true
+  },
+  "previousFields": [
+    {
+      "type": "compoundLogic",
+      "info": { ... }
+    }
+  ]
+}
+```
+
+**Key:** `disableNext` must be inside the `options` object, NOT at the field root level. Placing it at the root level will cause it to be silently ignored on import.
 
 ### Field Feedback
 
