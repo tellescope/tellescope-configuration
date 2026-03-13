@@ -1,0 +1,1148 @@
+{
+  "exportedAt": "2026-03-13T00:00:00.000Z",
+  "organizationId": "660000000000000000000000",
+  "organizationName": "SuccessRX",
+  "version": "1.0",
+  "title": "successrx-weight-loss-intake-2026-03-13",
+  "data": {
+    "journeys": [],
+    "automation_triggers": [],
+    "forms": [
+      {
+        "id": "660000000000000000000001",
+        "title": "SuccessRX Medical Weight Loss Intake",
+        "description": "Medical weight loss intake form with eligibility screening, GLP-1 history, and Stripe checkout.",
+        "type": "enduserFacing",
+        "numFields": 48,
+        "intakeEmailRequired": false,
+        "intakeEmailHidden": true,
+        "intakePhone": "hidden",
+        "intakeDateOfBirth": "hidden",
+        "intakeState": "hidden",
+        "intakeGender": "hidden",
+        "allowPublicURL": true,
+        "thanksMessage": "Your submission has been received. A licensed provider will review your information and follow up with next steps.",
+        "tags": [
+          "intake",
+          "weight-loss",
+          "glp-1",
+          "successrx"
+        ],
+        "customization": {
+          "multiPagePublicQuestions": true
+        },
+        "fields": [
+          {
+            "id": "660000000000000000000002",
+            "formId": "660000000000000000000001",
+            "title": "Welcome to SuccessRX Medical Weight Loss",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "root",
+                "info": {}
+              }
+            ],
+            "htmlDescription": "<p>Thank you for your interest in our medical weight loss program. This intake form will help us determine if you may be a candidate for a provider-reviewed treatment plan.</p><p>Please answer all questions accurately. Your responses will be reviewed by a licensed provider.</p>"
+          },
+          {
+            "id": "660000000000000000000005",
+            "formId": "660000000000000000000001",
+            "title": "First Name",
+            "type": "string",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000002"
+                }
+              }
+            ],
+            "intakeField": "fname"
+          },
+          {
+            "id": "660000000000000000000006",
+            "formId": "660000000000000000000001",
+            "title": "Last Name",
+            "type": "string",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000005"
+                }
+              }
+            ],
+            "intakeField": "lname"
+          },
+          {
+            "id": "660000000000000000000007",
+            "formId": "660000000000000000000001",
+            "title": "Email Address",
+            "type": "email",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000006"
+                }
+              }
+            ],
+            "intakeField": "email"
+          },
+          {
+            "id": "660000000000000000000008",
+            "formId": "660000000000000000000001",
+            "title": "Mobile Phone",
+            "type": "phone",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000007"
+                }
+              }
+            ],
+            "intakeField": "phone"
+          },
+          {
+            "id": "660000000000000000000009",
+            "formId": "660000000000000000000001",
+            "title": "Date of Birth",
+            "type": "dateString",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000008"
+                }
+              }
+            ],
+            "intakeField": "dateOfBirth"
+          },
+          {
+            "id": "660000000000000000000100",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "660000000000000000000009",
+                  "priority": 5,
+                  "label": "(Calculated: Age Less Than 18)",
+                  "condition": {
+                    "$or": [
+                      {
+                        "condition": {
+                          "Calculated: Age": {
+                            "$lt": 18
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "66000000000000000000000a",
+            "formId": "660000000000000000000001",
+            "title": "Sex Assigned at Birth",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000009"
+                }
+              }
+            ],
+            "intakeField": "gender",
+            "options": {
+              "choices": [
+                "Male",
+                "Female",
+                "Prefer not to say"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "66000000000000000000000b",
+            "formId": "660000000000000000000001",
+            "title": "What is your address?",
+            "type": "Address",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000000a"
+                }
+              }
+            ],
+            "intakeField": "address"
+          },
+          {
+            "id": "66000000000000000000000f",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "66000000000000000000000b",
+                  "priority": 5,
+                  "label": "(SC OR AL OR CA)",
+                  "condition": {
+                    "$or": [
+                      {
+                        "condition": {
+                          "66000000000000000000000b": "SC"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000000b": "AL"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000000b": "CA"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "660000000000000000000010",
+            "formId": "660000000000000000000001",
+            "title": "Height",
+            "type": "Height",
+            "isOptional": false,
+            "externalId": "height",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000000b"
+                }
+              }
+            ]
+          },
+          {
+            "id": "660000000000000000000011",
+            "formId": "660000000000000000000001",
+            "title": "Current Weight (lbs)",
+            "type": "number",
+            "isOptional": false,
+            "externalId": "current_weight",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000010"
+                }
+              }
+            ]
+          },
+          {
+            "id": "660000000000000000000012",
+            "formId": "660000000000000000000001",
+            "title": "Goal Weight (lbs)",
+            "type": "number",
+            "isOptional": true,
+            "externalId": "goal_weight",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000011"
+                }
+              }
+            ],
+            "description": "Optional but recommended."
+          },
+          {
+            "id": "660000000000000000000013",
+            "formId": "660000000000000000000001",
+            "title": "You may qualify for treatment",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000012"
+                }
+              }
+            ],
+            "htmlDescription": "<p>Based on the information you've provided so far, you may be eligible for our medical weight loss program. Please continue to complete the remaining questions.</p>"
+          },
+          {
+            "id": "660000000000000000000014",
+            "formId": "660000000000000000000001",
+            "title": "What is your primary goal?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "primary_goal",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000013"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Weight loss",
+                "Appetite control",
+                "Reduce cravings",
+                "Improve metabolic health",
+                "Improve body composition",
+                "Long-term weight maintenance"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000015",
+            "formId": "660000000000000000000001",
+            "title": "How long have you struggled with weight management?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "weight_history_duration",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000014"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Less than 1 year",
+                "1-3 years",
+                "3-5 years",
+                "5+ years"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000016",
+            "formId": "660000000000000000000001",
+            "title": "Have you used prescription weight loss medication before?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "prior_glp1_use",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000015"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000017",
+            "formId": "660000000000000000000001",
+            "title": "Are you currently taking a GLP-1 medication?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "current_glp1_use",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000016",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000018",
+            "formId": "660000000000000000000001",
+            "title": "Which medication have you taken?",
+            "type": "Dropdown",
+            "isOptional": false,
+            "externalId": "last_known_medication",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000016",
+                  "equals": "Yes"
+                }
+              },
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000017",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Semaglutide",
+                "Semaglutide + Glycine",
+                "Tirzepatide",
+                "Tirzepatide + Glycine",
+                "Ozempic",
+                "Wegovy",
+                "Mounjaro",
+                "Zepbound",
+                "Other"
+              ]
+            }
+          },
+          {
+            "id": "660000000000000000000019",
+            "formId": "660000000000000000000001",
+            "title": "What was your last or current dose?",
+            "type": "string",
+            "isOptional": false,
+            "externalId": "last_known_dose",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000018"
+                }
+              }
+            ],
+            "placeholder": "e.g. 0.25 mg, 0.5 mg, 1.0 mg"
+          },
+          {
+            "id": "66000000000000000000001a",
+            "formId": "660000000000000000000001",
+            "title": "When was your last injection?",
+            "type": "date",
+            "isOptional": false,
+            "externalId": "last_injection_date",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000019"
+                }
+              }
+            ]
+          },
+          {
+            "id": "66000000000000000000001b",
+            "formId": "660000000000000000000001",
+            "title": "Upload photo of current GLP-1 prescription",
+            "type": "file",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000001a"
+                }
+              }
+            ],
+            "options": {
+              "validFileTypes": [
+                "Image"
+              ]
+            }
+          },
+          {
+            "id": "66000000000000000000001c",
+            "formId": "660000000000000000000001",
+            "title": "Metabolic Health Screening",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "metabolic_screening",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000001b"
+                }
+              },
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000017",
+                  "equals": "No"
+                }
+              }
+            ],
+            "description": "Select all that apply.",
+            "options": {
+              "choices": [
+                "Difficulty losing weight despite diet/exercise",
+                "Strong cravings/appetite control issues",
+                "Elevated blood sugar or prediabetes",
+                "PCOS",
+                "Insulin resistance",
+                "Weight gain over past few years",
+                "None of the above"
+              ],
+              "radio": false
+            }
+          },
+          {
+            "id": "66000000000000000000001d",
+            "formId": "660000000000000000000001",
+            "title": "Medical Conditions",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "medical_conditions",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000001c"
+                }
+              }
+            ],
+            "description": "Select all that apply.",
+            "options": {
+              "choices": [
+                "Type 1 diabetes",
+                "Type 2 diabetes",
+                "High blood pressure",
+                "High cholesterol",
+                "Heart disease",
+                "Kidney disease",
+                "Liver disease",
+                "Gallbladder disease",
+                "Pancreatitis",
+                "Severe gastrointestinal disease",
+                "Gastroparesis",
+                "Thyroid disorder",
+                "None of the above"
+              ],
+              "radio": false
+            }
+          },
+          {
+            "id": "66000000000000000000001e",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "66000000000000000000001d",
+                  "priority": 1,
+                  "label": "(Type 1 diabetes OR Gallbladder disease OR Pancreatitis OR Severe gastrointestinal disease OR Gastroparesis)",
+                  "condition": {
+                    "$or": [
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Type 1 diabetes"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Gallbladder disease"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Pancreatitis"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Severe gastrointestinal disease"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Gastroparesis"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "66000000000000000000001f",
+            "formId": "660000000000000000000001",
+            "title": "Please explain your medical conditions further",
+            "type": "stringLong",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "66000000000000000000001d",
+                  "priority": 5,
+                  "label": "(Type 2 diabetes OR High blood pressure OR High cholesterol OR Heart disease OR Kidney disease OR Liver disease OR Thyroid disorder)",
+                  "condition": {
+                    "$or": [
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Type 2 diabetes"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "High blood pressure"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "High cholesterol"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Heart disease"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Kidney disease"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Liver disease"
+                        }
+                      },
+                      {
+                        "condition": {
+                          "66000000000000000000001d": "Thyroid disorder"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "id": "660000000000000000000020",
+            "formId": "660000000000000000000001",
+            "title": "Current Medications",
+            "type": "stringLong",
+            "isOptional": false,
+            "externalId": "current_medications",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000001f"
+                }
+              },
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "66000000000000000000001d",
+                  "equals": "None of the above"
+                }
+              }
+            ],
+            "description": "Please list all medications you are currently taking."
+          },
+          {
+            "id": "660000000000000000000021",
+            "formId": "660000000000000000000001",
+            "title": "Allergies",
+            "type": "stringLong",
+            "isOptional": false,
+            "externalId": "allergies",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000020"
+                }
+              }
+            ],
+            "description": "Please list any known allergies."
+          },
+          {
+            "id": "660000000000000000000022",
+            "formId": "660000000000000000000001",
+            "title": "Do you have a personal or family history of medullary thyroid carcinoma (MTC) or Multiple Endocrine Neoplasia syndrome type 2 (MEN2)?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "history_mtc_men2",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000021"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000023",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000022",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "660000000000000000000024",
+            "formId": "660000000000000000000001",
+            "title": "Have you ever had an allergic reaction to a GLP-1 medication?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "allergic_reaction_glp1",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000022",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000025",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000024",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "660000000000000000000026",
+            "formId": "660000000000000000000001",
+            "title": "Are you currently pregnant?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "currently_pregnant",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000024",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000027",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000026",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "660000000000000000000028",
+            "formId": "660000000000000000000001",
+            "title": "Are you currently breastfeeding?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "currently_breastfeeding",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000026",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000029",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000028",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "66000000000000000000002a",
+            "formId": "660000000000000000000001",
+            "title": "Do you have a history of diabetic ketoacidosis (DKA)?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "history_dka",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "660000000000000000000028",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "66000000000000000000002b",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "66000000000000000000002a",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "66000000000000000000002c",
+            "formId": "660000000000000000000001",
+            "title": "Do you have severe kidney impairment?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "severe_kidney_impairment",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "66000000000000000000002a",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "66000000000000000000002d",
+            "formId": "660000000000000000000001",
+            "title": "We're unable to proceed with this program based on your responses.",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "66000000000000000000002c",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "description": "Based on the information provided, certain medical conditions indicate this program may not be appropriate at this time.",
+            "options": {
+              "disableNext": true
+            }
+          },
+          {
+            "id": "66000000000000000000002e",
+            "formId": "660000000000000000000001",
+            "title": "Are you comfortable with self-injections?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "injection_readiness",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "66000000000000000000002c",
+                  "equals": "No"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes",
+                "No"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "66000000000000000000002f",
+            "formId": "660000000000000000000001",
+            "title": "ID Verification - Upload photo of your Driver's License",
+            "type": "file",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000002e"
+                }
+              }
+            ],
+            "options": {
+              "validFileTypes": [
+                "Image"
+              ]
+            }
+          },
+          {
+            "id": "660000000000000000000030",
+            "formId": "660000000000000000000001",
+            "title": "How would you like to purchase your program?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "purchase_preference",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "66000000000000000000002f"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Monthly subscription",
+                "One-time program",
+                "Show me both"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "660000000000000000000031",
+            "formId": "660000000000000000000001",
+            "title": "Your Recommended Path",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000030"
+                }
+              }
+            ],
+            "htmlDescription": "<p><strong>Based on your responses, you may align with the following provider-reviewed treatment path.</strong></p><p>Semaglutide + Glycine Injection \u2014 a compounded GLP-1 medication designed to support medical weight loss under provider supervision.</p><p><em>All treatments require provider approval.</em></p>"
+          },
+          {
+            "id": "660000000000000000000032",
+            "formId": "660000000000000000000001",
+            "title": "Your Program",
+            "type": "description",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000031"
+                }
+              }
+            ],
+            "htmlDescription": "<ul><li>Provider-reviewed treatment plan</li><li>Medication shipped to your door</li><li>Ongoing provider oversight</li><li>Easy refills</li></ul>"
+          },
+          {
+            "id": "660000000000000000000033",
+            "formId": "660000000000000000000001",
+            "title": "Consent Acknowledgments",
+            "type": "Question Group",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000032"
+                }
+              }
+            ],
+            "htmlDescription": "<p>Please review and agree to each of the following statements to proceed.</p>",
+            "options": {
+              "subFields": [
+                { "id": "660000000000000000000034" },
+                { "id": "660000000000000000000035" },
+                { "id": "660000000000000000000036" },
+                { "id": "660000000000000000000037" },
+                { "id": "660000000000000000000038" }
+              ]
+            }
+          },
+          {
+            "id": "660000000000000000000039",
+            "formId": "660000000000000000000001",
+            "title": "Electronic Signature",
+            "type": "signature",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000033"
+                }
+              }
+            ]
+          },
+          {
+            "id": "66000000000000000000003a",
+            "formId": "660000000000000000000001",
+            "title": "Payment",
+            "type": "Stripe",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": {
+                  "fieldId": "660000000000000000000039"
+                }
+              }
+            ],
+            "options": {
+              "productIds": [
+                "successrx_sema_gly_1ml_1mg_sub",
+                "successrx_sema_gly_1ml_1mg_onetime",
+                "successrx_sema_gly_1ml_2mg_sub",
+                "successrx_sema_gly_1ml_2mg_onetime"
+              ],
+              "chargeImmediately": true,
+              "stripeProductSelectionMode": true
+            }
+          }
+        ]
+      }
+    ],
+    "templates": [],
+    "calendar_event_templates": [],
+    "databases": []
+  }
+}
