@@ -128,6 +128,9 @@ interface FormField {
   isOptional?: boolean                    // Field is optional (default: required)
   options?: FormFieldOptions              // Field-specific options (see below)
 
+  // Question Group membership
+  isInGroup?: boolean                     // true if this field is a sub-field of a Question Group
+
   // Behavior
   sharedWithEnduser?: boolean             // Visible in patient portal
   prepopulateFromFields?: boolean         // Auto-fill from patient data
@@ -217,19 +220,52 @@ interface FormField {
 
 Groups multiple sub-fields into a single page/card in the form flow. Sub-fields are referenced by ID in the Question Group's `options.subFields` array.
 
-**Important:** Sub-fields should NOT appear as separate top-level fields in the form's field chain. They only exist as sub-fields of the group. The next field in the flow chains from the Question Group's ID, not from the last sub-field.
+**Creating Question Groups (API / Import):**
+
+Sub-fields must be created as separate form field records **before** the Question Group that references them. Each sub-field must have:
+- `isInGroup: true` — marks it as a sub-field so it doesn't appear as a standalone field
+- `previousFields: []` — empty array (not part of the main form flow)
+
+The Question Group field then references them via `options.subFields: [{ "id": "<sub-field-id>" }]`.
+
+**Field ordering in exports/imports:** Place sub-fields **before** their parent Question Group in the `fields` array. The importer creates fields in order, so sub-fields must exist before the Question Group can reference them.
+
+The next field in the main flow chains from the Question Group's ID, not from the last sub-field.
 
 ```json
+// Step 1: Sub-fields (created first, with isInGroup: true)
+{
+  "id": "660000000000000000000034",
+  "formId": "660000000000000000000001",
+  "title": "I acknowledge the privacy policy",
+  "type": "multiple_choice",
+  "isOptional": false,
+  "isInGroup": true,
+  "previousFields": [],
+  "options": { "choices": ["I agree"], "radio": false }
+},
+{
+  "id": "660000000000000000000035",
+  "formId": "660000000000000000000001",
+  "title": "I acknowledge the terms of service",
+  "type": "multiple_choice",
+  "isOptional": false,
+  "isInGroup": true,
+  "previousFields": [],
+  "options": { "choices": ["I agree"], "radio": false }
+},
+
+// Step 2: Question Group (references the sub-fields by ID)
 {
   "id": "660000000000000000000033",
+  "formId": "660000000000000000000001",
   "title": "Consent Acknowledgments",
   "type": "Question Group",
   "htmlDescription": "<p>Please review and agree to each of the following statements.</p>",
   "options": {
     "subFields": [
       { "id": "660000000000000000000034" },
-      { "id": "660000000000000000000035" },
-      { "id": "660000000000000000000036" }
+      { "id": "660000000000000000000035" }
     ]
   },
   "previousFields": [

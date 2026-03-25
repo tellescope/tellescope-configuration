@@ -13,7 +13,7 @@
         "title": "SuccessRX Medical Weight Loss Intake",
         "description": "Medical weight loss intake form with eligibility screening, GLP-1 history, and Stripe checkout.",
         "type": "enduserFacing",
-        "numFields": 48,
+        "numFields": 53,
         "intakeEmailRequired": false,
         "intakeEmailHidden": true,
         "intakePhone": "hidden",
@@ -1072,6 +1072,56 @@
               }
             ],
             "htmlDescription": "<ul><li>Provider-reviewed treatment plan</li><li>Medication shipped to your door</li><li>Ongoing provider oversight</li><li>Easy refills</li></ul>"
+          },
+          {
+            "id": "660000000000000000000034",
+            "formId": "660000000000000000000001",
+            "title": "I understand this is a provider-reviewed treatment plan, not a guarantee of treatment.",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": { "choices": ["I agree"], "radio": false }
+          },
+          {
+            "id": "660000000000000000000035",
+            "formId": "660000000000000000000001",
+            "title": "I confirm that the information I provided is accurate to the best of my knowledge.",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": { "choices": ["I agree"], "radio": false }
+          },
+          {
+            "id": "660000000000000000000036",
+            "formId": "660000000000000000000001",
+            "title": "I understand that a licensed provider will review my information before any treatment is prescribed.",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": { "choices": ["I agree"], "radio": false }
+          },
+          {
+            "id": "660000000000000000000037",
+            "formId": "660000000000000000000001",
+            "title": "I consent to telehealth services and electronic communication regarding my care.",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": { "choices": ["I agree"], "radio": false }
+          },
+          {
+            "id": "660000000000000000000038",
+            "formId": "660000000000000000000001",
+            "title": "I agree to the Terms of Service and Privacy Policy.",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": { "choices": ["I agree"], "radio": false }
           },
           {
             "id": "660000000000000000000033",
