@@ -399,6 +399,36 @@ a { color: #1976d2; text-decoration: none; }
 {https://example.com}[Click here]
 ```
 
+### Styling Template Link Variables as Buttons
+
+Template link variables like `{{portal.link.care-plan:Text}}` and `{{forms.[id].link:Text}}` generate their own `<a>` tags at render time. **Do NOT wrap them in `<a>` tags** — this creates nested anchors that break the button rendering.
+
+**Correct approach:** Place the variable directly in a styled `<td>` and use a CSS class to style the generated `<a>`:
+
+```html
+<style>
+  .cta-btn a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+  }
+</style>
+
+<!-- Button in the email body -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+  <tr>
+    <td class="cta-btn" style="border-radius: 8px; background-color: #0d6b4e; padding: 14px 32px; font-size: 15px; font-weight: 600; text-align: center;">
+      {{portal.link.care-plan:Visit Your Portal}}
+    </td>
+  </tr>
+</table>
+```
+
+**What does NOT work:**
+- `<a style="...">{{portal.link...}}</a>` — nested `<a>` tags break the markup
+- Inline `<style>` inside the `<td>` with generic selectors — gets stripped by email clients
+- `!important` is required on color/text-decoration to override email client defaults
+
 ---
 
 ## Complete Examples

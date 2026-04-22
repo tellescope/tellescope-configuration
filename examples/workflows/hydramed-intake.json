@@ -1,0 +1,433 @@
+{
+  "exportedAt": "2026-03-24T00:00:00.000Z",
+  "organizationId": "670000000000000000000000",
+  "organizationName": "HydraMed",
+  "version": "1.0",
+  "title": "hydramed-intake-2026-03-24",
+  "data": {
+    "journeys": [],
+    "automation_triggers": [],
+    "forms": [
+      {
+        "id": "670000000000000000000001",
+        "title": "HydraMed Intake Form",
+        "description": "Product selection intake form with customer information, shipping, terms agreement, and Stripe checkout.",
+        "type": "enduserFacing",
+        "version": "v2",
+        "numFields": 24,
+        "intakeEmailRequired": false,
+        "intakeEmailHidden": true,
+        "intakePhone": "hidden",
+        "intakeDateOfBirth": "hidden",
+        "intakeState": "hidden",
+        "intakeGender": "hidden",
+        "allowPublicURL": true,
+        "thanksMessage": "Thank you for your order! Your submission has been received and will be reviewed by our team.",
+        "tags": [
+          "intake",
+          "hydramed",
+          "product-selection"
+        ],
+        "customization": {
+          "multiPagePublicQuestions": true
+        },
+        "fields": [
+          {
+            "id": "670000000000000000000003",
+            "formId": "670000000000000000000001",
+            "title": "Sermorelin Injections & Troches",
+            "type": "multiple_choice",
+            "isOptional": true,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": {
+              "choices": [
+                "Sermorelin 6mg (One-time) - $249.00",
+                "Sermorelin 6mg - 7.5mg (Monthly) - $199.00",
+                "Sermorelin 9mg - 10mg (Monthly) - $245.00",
+                "Sermorelin 12.5mg - 15mg (Monthly) - $275.00",
+                "Sermorelin 3mg - 4mg (Recommended for Women) - $159.00",
+                "Sermorelin Troche (qty 30) - $199.00"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "670000000000000000000004",
+            "formId": "670000000000000000000001",
+            "title": "Ipamorelin and Tesamorelin Injections",
+            "type": "multiple_choice",
+            "isOptional": true,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": {
+              "choices": [
+                "Ipamorelin 6mg (One-time) - $249.00",
+                "Ipamorelin 6mg (Monthly) - $199.00",
+                "Ipamorelin 9mg (Monthly) - $245.00",
+                "Ipamorelin 15mg (Monthly) - $275.00",
+                "Tesamorelin 3mg (One-time) - $215.00",
+                "Tesamorelin 5mg (Monthly) - $245.00",
+                "Tesamorelin 15mg (Monthly) - $399.00",
+                "Tesamorelin 7.5mg (Monthly) - $295.00"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "670000000000000000000002",
+            "formId": "670000000000000000000001",
+            "title": "Peptide Injections",
+            "type": "Question Group",
+            "isOptional": true,
+            "previousFields": [
+              { "type": "root", "info": {} }
+            ],
+            "options": {
+              "subFields": [
+                { "id": "670000000000000000000003" },
+                { "id": "670000000000000000000004" }
+              ]
+            }
+          },
+          {
+            "id": "670000000000000000000006",
+            "formId": "670000000000000000000001",
+            "title": "Tirz Ultra: Advanced Weight Loss",
+            "type": "multiple_choice",
+            "isOptional": true,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": {
+              "choices": [
+                "Tirzepatide 18mg - 21mg - $499.00",
+                "Tirzepatide 18mg - 21mg - $699.00",
+                "Tirzepatide 60mg - 72mg - $899.00",
+                "Tirzepatide Microdose 10mg - $299.00"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "670000000000000000000007",
+            "formId": "670000000000000000000001",
+            "title": "Sema Plus: Optimized Weight Loss",
+            "type": "multiple_choice",
+            "isOptional": true,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": {
+              "choices": [
+                "Semaglutide 2.5mg - 3mg - $299.00",
+                "Semaglutide 5mg - 7.5mg - $399.00",
+                "Semaglutide 10.5mg - 12.5mg - $499.00",
+                "Semaglutide Microdose 1mg - $199.00"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "670000000000000000000005",
+            "formId": "670000000000000000000001",
+            "title": "Weight Loss Recommendations",
+            "type": "Question Group",
+            "isOptional": true,
+            "previousFields": [
+              { "type": "after", "info": { "fieldId": "670000000000000000000002" } }
+            ],
+            "options": {
+              "subFields": [
+                { "id": "670000000000000000000006" },
+                { "id": "670000000000000000000007" }
+              ]
+            }
+          },
+          {
+            "id": "670000000000000000000009",
+            "formId": "670000000000000000000001",
+            "title": "Medical Consult",
+            "type": "multiple_choice",
+            "isOptional": true,
+            "isInGroup": true,
+            "previousFields": [],
+            "options": {
+              "choices": [
+                "Medical Consult - $0.00"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "67000000000000000000000a",
+            "formId": "670000000000000000000001",
+            "title": "Blood Lab Work",
+            "type": "multiple_choice",
+            "isOptional": true,
+            "isInGroup": true,
+            "previousFields": [],
+            "description": "Pricing for standard labs only. Costs may vary if the provider orders additional specialized testing",
+            "options": {
+              "choices": [
+                "Medical Consult - $99.00"
+              ],
+              "radio": true
+            }
+          },
+          {
+            "id": "670000000000000000000008",
+            "formId": "670000000000000000000001",
+            "title": "Medical Care",
+            "type": "Question Group",
+            "isOptional": true,
+            "previousFields": [
+              { "type": "after", "info": { "fieldId": "670000000000000000000005" } }
+            ],
+            "options": {
+              "subFields": [
+                { "id": "670000000000000000000009" },
+                { "id": "67000000000000000000000a" }
+              ]
+            }
+          },
+          {
+            "id": "67000000000000000000000c",
+            "formId": "670000000000000000000001",
+            "title": "First Name",
+            "type": "string",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "fname"
+          },
+          {
+            "id": "67000000000000000000000d",
+            "formId": "670000000000000000000001",
+            "title": "Last Name",
+            "type": "string",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "lname"
+          },
+          {
+            "id": "67000000000000000000000e",
+            "formId": "670000000000000000000001",
+            "title": "For medical purposes, what was your sex assigned at birth?",
+            "type": "Dropdown",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "gender",
+            "options": {
+              "choices": [
+                "Male",
+                "Female"
+              ]
+            }
+          },
+          {
+            "id": "67000000000000000000000f",
+            "formId": "670000000000000000000001",
+            "title": "Patient's DOB",
+            "type": "dateString",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "dateOfBirth"
+          },
+          {
+            "id": "670000000000000000000010",
+            "formId": "670000000000000000000001",
+            "title": "Patient's Phone",
+            "type": "phone",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "phone"
+          },
+          {
+            "id": "670000000000000000000011",
+            "formId": "670000000000000000000001",
+            "title": "Patient's Email",
+            "type": "email",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "email"
+          },
+          {
+            "id": "67000000000000000000000b",
+            "formId": "670000000000000000000001",
+            "title": "Customer Information",
+            "type": "Question Group",
+            "isOptional": false,
+            "previousFields": [
+              { "type": "after", "info": { "fieldId": "670000000000000000000008" } }
+            ],
+            "options": {
+              "subFields": [
+                { "id": "67000000000000000000000c" },
+                { "id": "67000000000000000000000d" },
+                { "id": "67000000000000000000000e" },
+                { "id": "67000000000000000000000f" },
+                { "id": "670000000000000000000010" },
+                { "id": "670000000000000000000011" }
+              ]
+            }
+          },
+          {
+            "id": "670000000000000000000013",
+            "formId": "670000000000000000000001",
+            "title": "Shipping Address",
+            "type": "Address",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "intakeField": "address"
+          },
+          {
+            "id": "670000000000000000000012",
+            "formId": "670000000000000000000001",
+            "title": "Shipping Information",
+            "type": "Question Group",
+            "isOptional": false,
+            "previousFields": [
+              { "type": "after", "info": { "fieldId": "67000000000000000000000b" } }
+            ],
+            "htmlDescription": "<p>We do not ship to PO Box addresses. Please provide a valid street address.</p>",
+            "options": {
+              "subFields": [
+                { "id": "670000000000000000000013" }
+              ]
+            }
+          },
+          {
+            "id": "670000000000000000000015",
+            "formId": "670000000000000000000001",
+            "title": "Do you agree to the following HydraMed's Privacy Policy?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "htmlDescription": "<p><a href=\"https://hydramed.com/privacy-policy\">https://hydramed.com/privacy-policy</a></p>",
+            "options": {
+              "choices": [
+                "I agree"
+              ],
+              "radio": false
+            }
+          },
+          {
+            "id": "670000000000000000000016",
+            "formId": "670000000000000000000001",
+            "title": "Do you agree to the following HydraMed's Refund Policy?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "htmlDescription": "<p><a href=\"https://hydramed.com/hydramed-rx-refund-policy\">https://hydramed.com/hydramed-rx-refund-policy</a></p>",
+            "options": {
+              "choices": [
+                "I agree"
+              ],
+              "radio": false
+            }
+          },
+          {
+            "id": "670000000000000000000017",
+            "formId": "670000000000000000000001",
+            "title": "Do you agree to the following HydraMed RX Medication Fulfillment & Shipping Policy?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "htmlDescription": "<p><a href=\"https://hydramed.com/medication-fulfillment-shipping-policy\">https://hydramed.com/medication-fulfillment-shipping-policy</a></p>",
+            "options": {
+              "choices": [
+                "I agree"
+              ],
+              "radio": false
+            }
+          },
+          {
+            "id": "670000000000000000000018",
+            "formId": "670000000000000000000001",
+            "title": "Do you agree to the following terms and conditions?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "isInGroup": true,
+            "previousFields": [],
+            "htmlDescription": "<p><a href=\"https://hydramed.com/terms-of-service\">https://hydramed.com/terms-of-service</a></p>",
+            "options": {
+              "choices": [
+                "I agree"
+              ],
+              "radio": false
+            }
+          },
+          {
+            "id": "670000000000000000000014",
+            "formId": "670000000000000000000001",
+            "title": "Terms And Agreement",
+            "type": "Question Group",
+            "isOptional": false,
+            "previousFields": [
+              { "type": "after", "info": { "fieldId": "670000000000000000000012" } }
+            ],
+            "options": {
+              "subFields": [
+                { "id": "670000000000000000000015" },
+                { "id": "670000000000000000000016" },
+                { "id": "670000000000000000000017" },
+                { "id": "670000000000000000000018" }
+              ]
+            }
+          },
+          {
+            "id": "670000000000000000000019",
+            "formId": "670000000000000000000001",
+            "title": "Payment",
+            "type": "Stripe",
+            "isOptional": false,
+            "previousFields": [
+              { "type": "after", "info": { "fieldId": "670000000000000000000014" } }
+            ],
+            "options": {
+              "productIds": [
+                "placeholder_sermorelin_6mg_onetime",
+                "placeholder_sermorelin_6mg_monthly",
+                "placeholder_sermorelin_9mg_monthly",
+                "placeholder_sermorelin_12_5mg_monthly",
+                "placeholder_sermorelin_3mg_women",
+                "placeholder_sermorelin_troche",
+                "placeholder_ipamorelin_6mg_onetime",
+                "placeholder_ipamorelin_6mg_monthly",
+                "placeholder_ipamorelin_9mg_monthly",
+                "placeholder_ipamorelin_15mg_monthly",
+                "placeholder_tesamorelin_3mg_onetime",
+                "placeholder_tesamorelin_5mg_monthly",
+                "placeholder_tesamorelin_15mg_monthly",
+                "placeholder_tesamorelin_7_5mg_monthly",
+                "placeholder_tirzepatide_18mg_499",
+                "placeholder_tirzepatide_18mg_699",
+                "placeholder_tirzepatide_60mg",
+                "placeholder_tirzepatide_microdose",
+                "placeholder_semaglutide_2_5mg",
+                "placeholder_semaglutide_5mg",
+                "placeholder_semaglutide_10_5mg",
+                "placeholder_semaglutide_microdose",
+                "placeholder_medical_consult",
+                "placeholder_blood_lab_work"
+              ],
+              "chargeImmediately": true,
+              "stripeProductSelectionMode": true
+            }
+          }
+        ]
+      }
+    ],
+    "templates": [],
+    "calendar_event_templates": [],
+    "databases": []
+  }
+}
