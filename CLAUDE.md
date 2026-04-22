@@ -261,3 +261,47 @@ node validator/dist/cli.js config.json --no-warnings
 4. **Test incrementally**: Import small configurations first to validate
 5. **Document dependencies**: Note which forms/templates are used by which automations
 6. **Validate before importing**: Always run the validator on generated configurations
+
+## Capturing Learnings at End of Session
+
+Every configuration generation session is an opportunity to improve this repository. At the right moment, either invoke `/learn` or let the `auto-learn-on-success` skill activate to turn what was learned in the conversation into a PR (new validator rules, schema doc updates, examples, or CLAUDE.md improvements).
+
+### Recognizing the right moment
+
+You should develop a sense for when a session has reached the point where capturing learnings is beneficial. The key question: **is it highly likely that the configuration actually works?**
+
+**A passing validator is NOT sufficient evidence.** The validator catches structural issues but is not exhaustive or 100% reliable — many real-world problems (wrong template variable names, misrouted automation steps, semantic errors in logic, incorrect field references that happen to be valid IDs) slip past it. Treat `valid: true` as a prerequisite, not proof.
+
+The signals that matter are **downstream user confirmations** that the configuration was exercised in a real environment. Most users will do extra verification after Claude's work is done (import into Tellescope, test form submissions, trigger an automation, check a rendered template, review with a colleague). The authoritative signal is the user reporting the outcome of that verification.
+
+### Positive signals (capture learnings)
+
+Treat these as strong signals that it is time to suggest `/learn` or let `auto-learn-on-success` fire:
+
+- "it imported cleanly" / "the import worked"
+- "I tested it and it works" / "tested in staging, good to go"
+- "the form submission came through correctly"
+- "the automation fired as expected"
+- "the email/SMS rendered correctly"
+- "this is live in production now"
+- "ready to ship" / "shipping this"
+- The user is wrapping up the conversation after multiple iterations that ended in success.
+
+### Weak / insufficient signals (do NOT capture yet)
+
+Do not treat these as confirmation the configuration works:
+
+- Validator alone passing (`valid: true`) with no user-side verification.
+- The user saying "thanks" or "looks good" in response to Claude's output without having imported or tested.
+- A draft configuration that has not yet been exercised end-to-end.
+- Partial success (e.g. "the form imported but the journey didn't work yet").
+
+### What to do when you see a positive signal
+
+- If the user has already confirmed success in natural conversation, the `auto-learn-on-success` skill should activate. Do not duplicate it — if the skill takes the action, you do not need to separately suggest `/learn`.
+- If there is ambiguity (partial signals, unclear scope of what worked), ask one brief clarifying question before acting: e.g. "Did the journey automation actually fire end-to-end, or just import cleanly?"
+- If the session clearly produced reusable knowledge but the user hasn't explicitly confirmed success, you may proactively suggest `/learn` in one short line — but do not run it autonomously without confirmation. The skill handles the autonomous path only on explicit success.
+
+### What to do when the user asks "are we done?" but hasn't verified
+
+If the user signals end-of-session (e.g. "I think we're good", "anything else?") without having actually tested the configuration in Tellescope, say so plainly: recommend they import and exercise it first, and mention that `/learn` or the auto-learn flow will capture learnings once they confirm it works. Do not preemptively run `/learn` on the assumption that it will work.
