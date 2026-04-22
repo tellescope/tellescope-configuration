@@ -1,0 +1,53 @@
+{
+  "exportedAt": "2026-04-22T00:00:00.000Z",
+  "organizationId": "507f1f77bcf86cd799439011",
+  "organizationName": "Organization Name",
+  "version": "1.0",
+  "title": "dob-and-phone-2026-04-22",
+  "data": {
+    "journeys": [],
+    "automation_triggers": [],
+    "forms": [
+      {
+        "id": "a3f8c2d1e5b749067c3d9e12",
+        "title": "Date of Birth and Phone Number",
+        "type": "enduserFacing",
+        "numFields": 2,
+        "thanksMessage": "Thank you for submitting your information.",
+        "fields": [
+          {
+            "id": "b7e14f83a2c06d591e8f3047",
+            "formId": "a3f8c2d1e5b749067c3d9e12",
+            "title": "Date of Birth",
+            "type": "dateString",
+            "intakeField": "dateOfBirth",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "root",
+                "info": {}
+              }
+            ]
+          },
+          {
+            "id": "c92a5e370fd84b1628a7d506",
+            "formId": "a3f8c2d1e5b749067c3d9e12",
+            "title": "Phone Number",
+            "type": "phone",
+            "intakeField": "phone",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "b7e14f83a2c06d591e8f3047" }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "templates": [],
+    "calendar_event_templates": [],
+    "databases": []
+  }
+}

@@ -68,6 +68,9 @@ interface Form {
   isNonVisitElationNote?: boolean
   elationVisitNoteType?: string
 
+  // Fields — IMPORTANT: nested inside the form object, NOT a separate top-level key
+  fields?: FormField[]                    // Array of form fields (see FormField Structure below)
+
   // Scoring (for assessment forms)
   scoring?: FormScoring[]                 // Score calculation rules
   version?: string                        // Form version (e.g., "v2")
