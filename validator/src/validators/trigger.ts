@@ -27,7 +27,7 @@ interface AutomationTriggerLike {
   [key: string]: unknown;
 }
 
-const VALID_TRIGGER_STATUSES = ['active', 'inactive'];
+const VALID_TRIGGER_STATUSES = ['Active', 'Inactive'];
 
 /**
  * Validate a single automation trigger

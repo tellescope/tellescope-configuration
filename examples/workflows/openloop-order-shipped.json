@@ -1,0 +1,148 @@
+{
+  "exportedAt": "2026-04-22T00:00:00.000Z",
+  "organizationId": "660000000000000000000000",
+  "organizationName": "Organization Name",
+  "version": "1.0",
+  "title": "openloop-order-shipped-2026-04-22",
+  "data": {
+    "journeys": [
+      {
+        "id": "aaa000000000000000000001",
+        "title": "Order Shipped",
+        "defaultState": "enrolled",
+        "description": "Notifies patient via SMS and email when their order ships, then removes them from the journey.",
+        "states": [
+          {
+            "name": "enrolled",
+            "priority": "N/A",
+            "requiresFollowup": false,
+            "description": "Patient enrolled after order shipped"
+          }
+        ],
+        "tags": ["openloop", "order-shipped"],
+        "steps": [
+          {
+            "id": "aaa000000000000000000005",
+            "journeyId": "aaa000000000000000000001",
+            "events": [
+              { "type": "onJourneyStart", "info": {} }
+            ],
+            "action": {
+              "type": "sendSMS",
+              "info": {
+                "templateId": "aaa000000000000000000002",
+                "senderId": "507f1f77bcf86cd799439012"
+              }
+            },
+            "conditions": [],
+            "continueOnError": false,
+            "flowchartUI": { "x": 0, "y": 0 }
+          },
+          {
+            "id": "aaa000000000000000000006",
+            "journeyId": "aaa000000000000000000001",
+            "events": [
+              {
+                "type": "afterAction",
+                "info": {
+                  "automationStepId": "aaa000000000000000000005",
+                  "delayInMS": 0,
+                  "delay": 0,
+                  "unit": "Seconds"
+                }
+              }
+            ],
+            "action": {
+              "type": "sendEmail",
+              "info": {
+                "templateId": "aaa000000000000000000003",
+                "senderId": "507f1f77bcf86cd799439012"
+              }
+            },
+            "conditions": [],
+            "continueOnError": false,
+            "flowchartUI": { "x": 0, "y": 150 }
+          },
+          {
+            "id": "aaa000000000000000000007",
+            "journeyId": "aaa000000000000000000001",
+            "events": [
+              {
+                "type": "afterAction",
+                "info": {
+                  "automationStepId": "aaa000000000000000000006",
+                  "delayInMS": 0,
+                  "delay": 0,
+                  "unit": "Seconds"
+                }
+              }
+            ],
+            "action": {
+              "type": "removeFromJourney",
+              "info": {
+                "journeyId": "aaa000000000000000000001"
+              }
+            },
+            "conditions": [],
+            "continueOnError": false,
+            "flowchartUI": { "x": 0, "y": 300 }
+          }
+        ]
+      }
+    ],
+    "automation_triggers": [
+      {
+        "id": "aaa000000000000000000004",
+        "title": "OpenLoop Order Shipped → Add to Journey",
+        "event": {
+          "type": "Order Status Equals",
+          "info": {
+            "source": "OpenLoop",
+            "status": "Shipped"
+          }
+        },
+        "action": {
+          "type": "Add To Journey",
+          "info": {
+            "journeyId": "aaa000000000000000000001"
+          }
+        },
+        "status": "Active",
+        "tags": ["openloop", "order-shipped"]
+      }
+    ],
+    "forms": [],
+    "templates": [
+      {
+        "id": "aaa000000000000000000002",
+        "title": "Order Shipped - SMS",
+        "subject": "Order Shipped",
+        "message": "Hi {{enduser.fname}}, your order has shipped! Track your package here: {{order.tracking}}",
+        "type": "enduser",
+        "forChannels": ["SMS"],
+        "tags": ["openloop", "order-shipped", "sms"]
+      },
+      {
+        "id": "aaa000000000000000000003",
+        "title": "Order Shipped - Email",
+        "subject": "Your Order Has Shipped!",
+        "message": "Hi {{enduser.fname}},\n\nGreat news — your order has shipped!\n\nTrack your package: {{order.tracking}}\n\nIf you have any questions, feel free to reply to this email.\n\nBest,\n{{sender}}",
+        "html": "<p>Hi {{enduser.fname}},</p><p>Great news — your order has shipped!</p><p>Track your package: {{order.tracking}}</p><p>If you have any questions, feel free to reply to this email.</p><p>Best,<br>{{sender}}</p>",
+        "type": "enduser",
+        "mode": "html",
+        "forChannels": ["Email"],
+        "tags": ["openloop", "order-shipped", "email"]
+      }
+    ],
+    "calendar_event_templates": [],
+    "databases": [],
+    "flowchart_notes": [
+      {
+        "id": "aaa000000000000000000008",
+        "flowchartId": "aaa000000000000000000001",
+        "note": "Set the default sender for each step after import.",
+        "flowchartUI": { "x": 250, "y": 0 }
+      }
+    ]
+  }
+}
