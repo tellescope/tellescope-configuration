@@ -486,6 +486,54 @@ Used for complex conditional branching: multi-value OR/AND, calculated field com
 }
 ```
 
+**Critical: `fieldId` controls evaluation timing, not just which field is tested.**
+
+The form engine evaluates a `compoundLogic` condition when the field identified by `fieldId` is answered — not when the field it is attached to is rendered. This means:
+
+- Any fields referenced inside `condition` that have **not yet been answered** at the time `fieldId` is answered will have `null` values, causing those sub-conditions to fail silently.
+- Always set `fieldId` to the **last field answered** before the condition needs to be true.
+
+**Example of the timing pitfall — branching after a shared pre-branch section:**
+
+Suppose the form has: `branchQuestion` → `sharedQuestion` → `firstBranchAField` | `firstBranchBField`. If `firstBranchAField` uses `fieldId: branchQuestion` and its condition also checks `sharedQuestion`, that check evaluates when `branchQuestion` is answered — before `sharedQuestion` is ever shown — and always fails.
+
+**Fix:** Use **two separate `compoundLogic` entries** in `previousFields`, each with its own `fieldId` pointing to the last relevant field in its path:
+
+```json
+"previousFields": [
+  {
+    "type": "compoundLogic",
+    "info": {
+      "fieldId": "<sharedQuestion>",
+      "priority": 1,
+      "label": "(Branch A) AND (sharedQuestion = optionX)",
+      "condition": {
+        "$and": [
+          { "condition": { "<branchQuestion>": "Branch A answer" } },
+          { "condition": { "<sharedQuestion>": "optionX" } }
+        ]
+      }
+    }
+  },
+  {
+    "type": "compoundLogic",
+    "info": {
+      "fieldId": "<conditionalFollowUp>",
+      "priority": 1,
+      "label": "(Branch A) AND (conditionalFollowUp = proceed)",
+      "condition": {
+        "$and": [
+          { "condition": { "<branchQuestion>": "Branch A answer" } },
+          { "condition": { "<conditionalFollowUp>": "proceed" } }
+        ]
+      }
+    }
+  }
+]
+```
+
+Each entry fires at the correct moment: the first when `sharedQuestion` is answered, the second when the optional `conditionalFollowUp` is answered. Both also check `branchQuestion`, which is already answered by then.
+
 ##### CompoundFilter Format
 
 The `condition` object uses Tellescope's `CompoundFilter` type. It is a recursive tree of `$or`, `$and`, and `condition` nodes.
