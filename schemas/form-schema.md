@@ -486,6 +486,54 @@ Used for complex conditional branching: multi-value OR/AND, calculated field com
 }
 ```
 
+**Critical: `fieldId` controls evaluation timing, not just which field is tested.**
+
+The form engine evaluates a `compoundLogic` condition when the field identified by `fieldId` is answered — not when the field it is attached to is rendered. This means:
+
+- Any fields referenced inside `condition` that have **not yet been answered** at the time `fieldId` is answered will have `null` values, causing those sub-conditions to fail silently.
+- Always set `fieldId` to the **last field answered** before the condition needs to be true.
+
+**Example of the timing pitfall — branching after a shared pre-branch section:**
+
+Suppose the form has: `branchQuestion` → `sharedQuestion` → `firstBranchAField` | `firstBranchBField`. If `firstBranchAField` uses `fieldId: branchQuestion` and its condition also checks `sharedQuestion`, that check evaluates when `branchQuestion` is answered — before `sharedQuestion` is ever shown — and always fails.
+
+**Fix:** Use **two separate `compoundLogic` entries** in `previousFields`, each with its own `fieldId` pointing to the last relevant field in its path:
+
+```json
+"previousFields": [
+  {
+    "type": "compoundLogic",
+    "info": {
+      "fieldId": "<sharedQuestion>",
+      "priority": 1,
+      "label": "(Branch A) AND (sharedQuestion = optionX)",
+      "condition": {
+        "$and": [
+          { "condition": { "<branchQuestion>": "Branch A answer" } },
+          { "condition": { "<sharedQuestion>": "optionX" } }
+        ]
+      }
+    }
+  },
+  {
+    "type": "compoundLogic",
+    "info": {
+      "fieldId": "<conditionalFollowUp>",
+      "priority": 1,
+      "label": "(Branch A) AND (conditionalFollowUp = proceed)",
+      "condition": {
+        "$and": [
+          { "condition": { "<branchQuestion>": "Branch A answer" } },
+          { "condition": { "<conditionalFollowUp>": "proceed" } }
+        ]
+      }
+    }
+  }
+]
+```
+
+Each entry fires at the correct moment: the first when `sharedQuestion` is answered, the second when the optional `conditionalFollowUp` is answered. Both also check `branchQuestion`, which is already answered by then.
+
 ##### CompoundFilter Format
 
 The `condition` object uses Tellescope's `CompoundFilter` type. It is a recursive tree of `$or`, `$and`, and `condition` nodes.
@@ -609,6 +657,43 @@ For checkbox fields where different selections lead to different branches, use s
   }
 }
 ```
+
+### Default Branch + DQ Gate Pattern
+
+When one answer is a disqualifying minority (e.g. "Female" on a sex question where the form is for males only), use `"after"` for the happy-path field and a conditional (`previousEquals` or `compoundLogic`) for the DQ field. The DQ field's `disableNext: true` blocks any patient who reaches it from advancing to the default-branch field.
+
+**Why this works:** `"after"` is the lowest-priority branch. When the DQ condition matches, the DQ field is shown first and `disableNext` prevents the patient from ever reaching the `"after"` field. Non-DQ patients skip the DQ field entirely and follow the default `"after"` path.
+
+```json
+[
+  {
+    "id": "...<dq-field>...",
+    "title": "Disqualified",
+    "type": "Hidden Value",
+    "isOptional": true,
+    "previousFields": [
+      {
+        "type": "previousEquals",
+        "info": { "fieldId": "<gate-field>", "equals": "Female" }
+      }
+    ],
+    "options": { "default": "DQ", "disableNext": true }
+  },
+  {
+    "id": "...<next-field>...",
+    "title": "Next question for qualifying patients",
+    "type": "stringLong",
+    "previousFields": [
+      {
+        "type": "after",
+        "info": { "fieldId": "<gate-field>" }
+      }
+    ]
+  }
+]
+```
+
+**DQ field type:** Use `Hidden Value` with `options.default: "DQ"` to silently record disqualification status without showing UI. Use `description` with `disableNext` when you want to display an explanation message to the patient.
 
 ### Hard Stop Pattern
 
