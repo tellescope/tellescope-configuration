@@ -85,7 +85,7 @@ interface MessageTemplate {
 }
 ```
 
-**subject**: Required for all templates. For SMS-only templates, can be set to an empty string `""` or a short identifier.
+**subject**: Required for all templates, including SMS. SMS templates must have a non-empty subject (e.g., a short identifier matching the template purpose) even though the subject is not displayed to the recipient.
 
 ---
 

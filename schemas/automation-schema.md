@@ -180,7 +180,7 @@ interface AutomationTrigger {
   title: string                           // Trigger name
   event: AutomationTriggerEvent           // Event configuration
   action: AutomationTriggerAction         // Action to take
-  status: 'active' | 'inactive'           // Enable/disable
+  status: 'Active' | 'Inactive'           // Enable/disable
 
   // Optional
   journeyId?: string                      // Link to journey
@@ -376,6 +376,22 @@ Fires when a tag is added to patient.
 }
 ```
 
+#### Order Status Equals
+Fires when a patient's order status matches a specific source and status.
+```json
+{
+  "type": "Order Status Equals",
+  "info": {
+    "source": "OpenLoop",                   // Order source (e.g., "OpenLoop")
+    "status": "Shipped",                    // Status value to match
+    "fills": [],                            // Optional: fill value filters
+    "skus": [],                             // Optional: SKU filters
+    "skuPartials": [],                      // Optional: partial SKU matches
+    "titlePartials": []                     // Optional: partial title matches
+  }
+}
+```
+
 #### Enduser Created
 Fires when a new patient is created.
 ```json
@@ -388,6 +404,16 @@ Fires when a new patient is created.
 ---
 
 ## Action Types
+
+### Important: Action Type Naming Conventions
+
+**Journey step actions** use camelCase (e.g., `sendSMS`, `sendEmail`, `addToJourney`).
+
+**Automation trigger actions** use title case with spaces (e.g., `Add To Journey`, `Add Tags`, `Set Fields`). See the [Trigger Action Types](#trigger-action-types) section below.
+
+### Important: senderId is Required
+
+The `senderId` field is **required** for `sendSMS` and `sendEmail` actions. It cannot be omitted or set to an empty string — both cause API errors. When generating configurations without a known user ID, use a placeholder ObjectId (e.g., `"507f1f77bcf86cd799439012"`). The sender will appear blank after import and should be set manually.
 
 ### Communication Actions
 
@@ -675,6 +701,23 @@ Fires when a new patient is created.
 | `scheduleAppointment` | Auto-schedule appointment |
 | `createAppointment` | Create appointment directly |
 | `createOrder` | Create lab order |
+
+### Trigger Action Types
+
+Automation trigger actions use **title case with spaces**, unlike journey step actions which use camelCase.
+
+| Action Type | Description |
+|------------|-------------|
+| `Add To Journey` | Add patient to journey |
+| `Remove From Journey` | Remove patient from journey |
+| `Remove From All Journeys` | Remove from all journeys |
+| `Add Tags` | Add tags to patient |
+| `Remove Tags` | Remove tags from patient |
+| `Set Fields` | Update patient fields |
+| `Assign Care Team` | Assign care team by tag |
+| `Remove Care Team` | Remove care team |
+| `Create User Notifications` | Notify users |
+| `Reply to Chat` | Send chat reply |
 
 ---
 
