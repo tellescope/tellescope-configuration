@@ -50,7 +50,8 @@ Look back through the entire conversation and identify learnings in each of thes
 - **New validator rules** (`validator/src/`): errors or misconfigurations the validator failed to catch, or cases where its suggestion was wrong or missing.
 - **Schema documentation gaps** (`schemas/*.md`): fields, enum values, constraints, or relationships that had to be inferred because they weren't documented.
 - **Missing or improvable examples** (`examples/models/{type}/` or `examples/workflows/`): configurations or patterns worth preserving as references.
-- **CLAUDE.md improvements**: navigation, workflow, or quick-reference gaps that slowed down the conversation.
+
+Do NOT modify `CLAUDE.md` as part of `/learn`. Any changes to `CLAUDE.md` are out of scope for this command and must be made separately by a maintainer.
 
 Keep the set of changes focused on one coherent theme. If the conversation surfaced many unrelated learnings, pick the most impactful theme for this PR on your own judgment and note the dropped themes in the PR body under a `Deferred` section.
 
@@ -66,7 +67,7 @@ For each learning, in order:
    - **Examples**: add exactly one example file (or modify exactly one). Sanitize all organization-specific IDs, PHI, and real contact info to placeholder values.
    - **Schema docs**: edit the one relevant section in the appropriate `schemas/*.md` file. Do not opportunistically reword neighboring sections.
    - **Validator rules**: add or update the one rule in `validator/src/`. Run `cd validator && npm run build && cd ..`.
-   - **CLAUDE.md**: edit only the one section relevant to this learning.
+   - Do NOT edit `CLAUDE.md` — it is out of scope for `/learn`.
 2. **Validate if applicable**: run `node validator/dist/cli.js <path>` on any example touched. If validation fails, fix it in the same commit — do not commit a broken example. If a validator rule change is involved, also re-run the validator on pre-existing relevant examples to catch regressions.
 3. **Commit only the files changed for this learning**:
    ```bash
@@ -95,7 +96,7 @@ Once all per-learning commits are in place:
    ```
    PR body structure:
    - Short intro describing the theme.
-   - A bullet list where each bullet corresponds to one commit in the series (mirroring `git log --oneline`), grouped by validator / schema / example / CLAUDE.md.
+   - A bullet list where each bullet corresponds to one commit in the series (mirroring `git log --oneline`), grouped by validator / schema / example.
    - A `Deferred` section listing any themes intentionally dropped from this PR.
 5. Report the PR URL back to the user in one line.
 
