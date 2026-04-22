@@ -164,6 +164,25 @@ function validateExportStructure(config: unknown): ValidationError[] {
       expected: 'object',
       actual: typeof exportConfig.data,
     });
+  } else {
+    // Detect common structural mistake: form_fields placed at data root instead of inside each form
+    const dataObj = exportConfig.data as Record<string, unknown>;
+    if (Array.isArray(dataObj['form_fields'])) {
+      errors.push({
+        code: 'MISPLACED_FORM_FIELDS',
+        message: 'data.form_fields is not a valid export key. Form fields must be nested inside each form object under a "fields" array (e.g. data.forms[0].fields), not at the top level of data.',
+        path: 'data.form_fields',
+        severity: 'error',
+        expected: 'fields nested inside each form: data.forms[N].fields',
+        actual: 'data.form_fields (top-level array)',
+        suggestion: {
+          type: 'rename',
+          targetPath: 'data.form_fields',
+          description: 'Move each item into the corresponding form object under a "fields" array',
+          confidence: 'low',
+        },
+      });
+    }
   }
 
   return errors;

@@ -31,7 +31,8 @@ export type ValidationErrorCode =
   | 'UNCLOSED_VARIABLE'
   // Export structure errors
   | 'INVALID_EXPORT_STRUCTURE'
-  | 'MISSING_EXPORT_FIELD';
+  | 'MISSING_EXPORT_FIELD'
+  | 'MISPLACED_FORM_FIELDS';
 
 /**
  * Types of fixes that can be suggested
