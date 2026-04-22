@@ -1,0 +1,987 @@
+{
+  "exportedAt": "2026-04-22T12:00:00.000Z",
+  "organizationId": "507f1f77bcf86cd799439011",
+  "organizationName": "Example Organization",
+  "version": "1.0",
+  "title": "beluga-streamlined-trt-intake-2026-04-22",
+  "data": {
+    "journeys": [],
+    "automation_triggers": [],
+    "forms": [
+      {
+        "id": "600e12eed5aea6eca01b0001",
+        "title": "Beluga Streamlined TRT Intake",
+        "description": "Streamlined Testosterone Replacement Therapy intake form with eligibility screening for new and continuation patients.",
+        "type": "enduserFacing",
+        "numFields": 41,
+        "tags": ["trt", "intake", "beluga"],
+        "customization": {
+          "multiPagePublicQuestions": true
+        },
+        "fields": [
+
+          {
+            "id": "600e12eed5aea6eca01b0002",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Sex assigned at birth?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "externalId": "sex",
+            "previousFields": [{ "type": "root", "info": {} }],
+            "options": {
+              "choices": ["Male", "Female"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0003",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0002",
+                  "equals": "Female"
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0004",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Any current medical conditions?",
+            "type": "stringLong",
+            "isOptional": true,
+            "externalId": "medicalConditions",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0002" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0005",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Current medications & supplements? If so, provide the name and dosages.",
+            "type": "stringLong",
+            "isOptional": true,
+            "externalId": "selfReportedMeds",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0004" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0006",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Any known allergies?",
+            "type": "stringLong",
+            "isOptional": true,
+            "externalId": "allergies",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0005" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0007",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "What is your current gender identity?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0006" }
+              }
+            ],
+            "options": {
+              "choices": ["Man", "Woman", "Transgender man", "Transgender woman", "Non-binary"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0008",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0007",
+                  "priority": 5,
+                  "label": "(Woman OR Transgender man OR Transgender woman)",
+                  "condition": {
+                    "$or": [
+                      { "condition": { "600e12eed5aea6eca01b0007": "Woman" } },
+                      { "condition": { "600e12eed5aea6eca01b0007": "Transgender man" } },
+                      { "condition": { "600e12eed5aea6eca01b0007": "Transgender woman" } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0009",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "What is your height?",
+            "type": "Height",
+            "isOptional": false,
+            "intakeField": "height",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0007" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b000a",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "What is your weight in pounds?",
+            "type": "number",
+            "isOptional": false,
+            "intakeField": "weight",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0009" }
+              }
+            ],
+            "options": {
+              "min": 50,
+              "max": 1000
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b000b",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Your BMI",
+            "type": "description",
+            "isOptional": true,
+            "description": "Your BMI is: {{enduser.BMI}}",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b000a" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b000c",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Have you been diagnosed with low testosterone?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b000b" }
+              }
+            ],
+            "options": {
+              "choices": [
+                "No — I'm new to TRT",
+                "Yes — I'm currently on or I've been on TRT before"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b000d",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Did you know that testosterone replacement therapy (TRT) can lower your sperm production and may reduce fertility, so if you're actively trying to conceive then TRT may not be the best option for you at this time. Do you understand the risks associated with TRT and how it may impact your fertility?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b000c" }
+              }
+            ],
+            "options": {
+              "choices": [
+                "I understand the risk and I'm not planning on having children and would like to continue with treatment",
+                "I am planning on having children and would be interested in alternatives such as enclomiphene",
+                "I AM planning on having children soon and would like to cancel"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b000e",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b000d",
+                  "equals": "I AM planning on having children soon and would like to cancel"
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b000f",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Do you have sleep apnea?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b000d" }
+              }
+            ],
+            "options": {
+              "choices": ["Yes", "No"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0010",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Sleep Apnea and TRT",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "description": "TRT can worsen existing sleep apnea or reveal previously undiagnosed sleep apnea. If you notice increased snoring, gasping at night, morning headaches, excessive daytime fatigue, or if someone observes breathing pauses during your sleep, please notify us immediately. Untreated sleep apnea can lead to low nighttime oxygen levels and added strain on your heart. If you already have sleep apnea and are not consistently using your CPAP or other treatment, TRT may increase your risk of complications. Please keep us informed of any symptoms so we can ensure your treatment remains safe.",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b000f",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "I have read and understand this information and I wish to proceed",
+                "I have read and understand this information and I do NOT wish to proceed"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0011",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0010",
+                  "equals": "I have read and understand this information and I do NOT wish to proceed"
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0012",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Which symptoms are you experiencing? (Select all that apply)",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b000f",
+                  "priority": 1,
+                  "label": "(New Patient) AND (No sleep apnea)",
+                  "condition": {
+                    "$and": [
+                      { "condition": { "600e12eed5aea6eca01b000c": "No — I'm new to TRT" } },
+                      { "condition": { "600e12eed5aea6eca01b000f": "No" } }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0010",
+                  "priority": 1,
+                  "label": "(New Patient) AND (acknowledged proceed)",
+                  "condition": {
+                    "$and": [
+                      { "condition": { "600e12eed5aea6eca01b000c": "No — I'm new to TRT" } },
+                      { "condition": { "600e12eed5aea6eca01b0010": "I have read and understand this information and I wish to proceed" } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Low sex drive",
+                "Erectile dysfunction",
+                "Low energy / fatigue",
+                "Mood changes (sad, irritable)",
+                "Muscle loss",
+                "Slow exercise recovery",
+                "Increased body fat",
+                "Less facial/body hair",
+                "Breast tissue growth",
+                "Hot flashes",
+                "Low bone density",
+                "I have other symptoms",
+                "None of these"
+              ],
+              "radio": false
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0013",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Tell us about your other symptoms",
+            "type": "stringLong",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0012",
+                  "equals": "I have other symptoms"
+                }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0014",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "How long have you had these symptoms?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0013" }
+              },
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0012",
+                  "priority": 1,
+                  "label": "(does not contain I have other symptoms)",
+                  "condition": {
+                    "$or": [
+                      { "condition": { "600e12eed5aea6eca01b0012": { "$doesNotContain": "I have other symptoms" } } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "choices": ["1-6 months", "7-12 months", "Over a year"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0015",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Do any of these apply to you? (Select all that apply)",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0014" }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Pituitary or hypothalamic disease",
+                "Recent peripheral vision changes without a known cause",
+                "I'm taking oral ketoconazole",
+                "I'm taking long term glucocorticoids such as prednisone",
+                "I'm taking spironolactone",
+                "History of prostate cancer and/or elevated PSA",
+                "History of breast cancer",
+                "Polycythemia (elevated blood counts)",
+                "Untreated or severe sleep apnea",
+                "Advanced kidney disease and/or liver cirrhosis",
+                "History of blood clots (DVT or PE)",
+                "Uncontrolled heart failure (hospitalization within the last year for this)",
+                "Heart attack or stroke within the last 12 months",
+                "None of these apply to me"
+              ],
+              "radio": false
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0016",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0015",
+                  "priority": 5,
+                  "label": "(disqualifying condition selected)",
+                  "condition": {
+                    "$or": [
+                      { "condition": { "600e12eed5aea6eca01b0015": "Pituitary or hypothalamic disease" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "Recent peripheral vision changes without a known cause" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "I'm taking oral ketoconazole" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "I'm taking long term glucocorticoids such as prednisone" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "I'm taking spironolactone" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "History of prostate cancer and/or elevated PSA" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "History of breast cancer" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "Polycythemia (elevated blood counts)" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "Untreated or severe sleep apnea" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "Advanced kidney disease and/or liver cirrhosis" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "History of blood clots (DVT or PE)" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "Uncontrolled heart failure (hospitalization within the last year for this)" } },
+                      { "condition": { "600e12eed5aea6eca01b0015": "Heart attack or stroke within the last 12 months" } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0017",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "When were you diagnosed with low testosterone?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b000f",
+                  "priority": 1,
+                  "label": "(Continuation Patient) AND (No sleep apnea)",
+                  "condition": {
+                    "$and": [
+                      { "condition": { "600e12eed5aea6eca01b000c": "Yes — I'm currently on or I've been on TRT before" } },
+                      { "condition": { "600e12eed5aea6eca01b000f": "No" } }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0010",
+                  "priority": 1,
+                  "label": "(Continuation Patient) AND (acknowledged proceed)",
+                  "condition": {
+                    "$and": [
+                      { "condition": { "600e12eed5aea6eca01b000c": "Yes — I'm currently on or I've been on TRT before" } },
+                      { "condition": { "600e12eed5aea6eca01b0010": "I have read and understand this information and I wish to proceed" } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "choices": ["Less than 1 year", "1-5 years", "6 or more years"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0018",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Do any of these apply to you? (Select all that apply)",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0017" }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Pituitary or hypothalamic disease",
+                "Recent peripheral vision changes without a known cause",
+                "I'm taking oral ketoconazole",
+                "I'm taking long term glucocorticoids such as prednisone",
+                "I'm taking spironolactone",
+                "History of prostate cancer and/or elevated PSA",
+                "History of breast cancer",
+                "Polycythemia (elevated blood counts)",
+                "Untreated or severe sleep apnea",
+                "Advanced kidney disease and/or liver cirrhosis",
+                "History of blood clots (DVT or PE)",
+                "Uncontrolled heart failure (hospitalization within the last year for this)",
+                "Heart attack or stroke within the last 12 months",
+                "None of these apply to me"
+              ],
+              "radio": false
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0019",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0018",
+                  "priority": 5,
+                  "label": "(disqualifying condition selected)",
+                  "condition": {
+                    "$or": [
+                      { "condition": { "600e12eed5aea6eca01b0018": "Pituitary or hypothalamic disease" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "Recent peripheral vision changes without a known cause" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "I'm taking oral ketoconazole" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "I'm taking long term glucocorticoids such as prednisone" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "I'm taking spironolactone" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "History of prostate cancer and/or elevated PSA" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "History of breast cancer" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "Polycythemia (elevated blood counts)" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "Untreated or severe sleep apnea" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "Advanced kidney disease and/or liver cirrhosis" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "History of blood clots (DVT or PE)" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "Uncontrolled heart failure (hospitalization within the last year for this)" } },
+                      { "condition": { "600e12eed5aea6eca01b0018": "Heart attack or stroke within the last 12 months" } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b001a",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "What TRT are you currently using? Include medication name, type (spray, gel, injection), concentration, and dose.",
+            "type": "stringLong",
+            "isOptional": false,
+            "placeholder": "Example: Testosterone cypionate 200mg/ml, 0.25ml injection",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0018",
+                  "equals": "None of these apply to me"
+                }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b001b",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "When did you last take your testosterone? Please provide the exact date including month and year.",
+            "type": "stringLong",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b001a" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b001c",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "How long have you been on your current medication?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b001b" }
+              }
+            ],
+            "options": {
+              "choices": ["Less than 3 months", "3 – 6 months", "More than 6 months"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b001d",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Are you happy with your current treatment?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b001c" }
+              }
+            ],
+            "options": {
+              "choices": ["Yes", "No"],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b001e",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Tell us more about what you're experiencing",
+            "type": "stringLong",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b001d",
+                  "equals": "No"
+                }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b001f",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Any side effects since starting TRT? (Select all that apply)",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b001e" }
+              },
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b001d",
+                  "equals": "Yes"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "High blood counts (polycythemia)",
+                "Has a provider told you to donate blood",
+                "Mood swings/depression",
+                "Acne/oily skin",
+                "Worsening sleep apnea",
+                "Injection-site issues",
+                "No side effects",
+                "I have experienced other side effects"
+              ],
+              "radio": false
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0020",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Tell us more about your other side effects",
+            "type": "stringLong",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b001f",
+                  "equals": "I have experienced other side effects"
+                }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0021",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Have you ever had side effects or complications to other TRT products?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0020" }
+              },
+              {
+                "type": "compoundLogic",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b001f",
+                  "priority": 1,
+                  "label": "(does not contain other side effects)",
+                  "condition": {
+                    "$or": [
+                      { "condition": { "600e12eed5aea6eca01b001f": { "$doesNotContain": "I have experienced other side effects" } } }
+                    ]
+                  }
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "Yes, I have had other issues",
+                "No, I haven't had any other issues"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0022",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Tell us more about what you have experienced including the reaction and which medication caused this reaction",
+            "type": "stringLong",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0021",
+                  "equals": "Yes, I have had other issues"
+                }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0023",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Want to adjust your treatment?",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0022" }
+              },
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0021",
+                  "equals": "No, I haven't had any other issues"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "No — keep my current treatment",
+                "Yes — reduce side effects",
+                "Yes — improve results",
+                "Not sure — advise me"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0024",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Lab Results Upload",
+            "type": "file",
+            "description": "To ensure the highest quality of care during your telemedicine consultation, we kindly request your assistance in providing an image of your initial labs obtained upon diagnosis which show your abnormal testosterone levels. Please be assured that these images will remain private and will not be shared. The physician will use the picture solely for assessment purposes to better understand your health condition. Thank you for your cooperation and understanding in helping to provide comprehensive care remotely.",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0023" }
+              }
+            ],
+            "options": {
+              "validFileTypes": ["Image", "PDF"]
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0025",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Anything else you'd like to tell the doctor?",
+            "type": "stringLong",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0015",
+                  "equals": "None of these apply to me"
+                }
+              },
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0024" }
+              }
+            ]
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0026",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Identity Verification",
+            "type": "file",
+            "description": "Upload a photo of a valid government-issued photo ID such as a driver's license or passport which has your picture, name and date of birth clearly visible. If applicable, upload a photo of the front and the back especially when using a military ID as your date of birth is on the back of the card. Make sure the photo is clear and legible.",
+            "isOptional": false,
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0025" }
+              }
+            ],
+            "options": {
+              "validFileTypes": ["Image", "PDF"]
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0027",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Consent (Truthfulness)",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "htmlDescription": "<p>Please attest to the following confirming that all information you have provided to us is true and complete.</p><p>I confirm that the medications that I take and my medical history are accurate.</p><p>I verify that I am the patient and that I have answered the questions asked in this intake form. I confirm that I have reviewed and understood all the questions asked of me. I attest that the answers and information I have provided in this questionnaire is true and complete to the best of my knowledge.</p><p>Testosterone therapy is considered a controlled medication. I confirm that the provider can review my controlled medication use through the Prescription Drug Monitoring Program (PDMP). I understand that it is critical to my health to share complete health information with my doctor.</p>",
+            "previousFields": [
+              {
+                "type": "after",
+                "info": { "fieldId": "600e12eed5aea6eca01b0026" }
+              }
+            ],
+            "options": {
+              "choices": [
+                "I have read the above information and I do consent and wish to move forward",
+                "I have read the above information and I do not wish to continue"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0028",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0027",
+                  "equals": "I have read the above information and I do not wish to continue"
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b0029",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Consent (Testosterone Replacement Therapy (TRT))",
+            "type": "multiple_choice",
+            "isOptional": false,
+            "htmlDescription": "<p>You are requesting evaluation and possible treatment with Testosterone Replacement Therapy (TRT) to address symptoms related to low or declining testosterone levels. Testosterone may be prescribed as a transdermal cream, gel, nasal spray, or injection, depending on your clinical evaluation and laboratory results. I understand that this program involves a licensed healthcare provider's evaluation and ongoing medical supervision. Non-medical staff and wellness coaches do NOT prescribe or adjust medication.</p><h3>Potential Benefits</h3><ul><li>Control or reduction of symptoms associated with testosterone deficiency (e.g., fatigue, sleep disturbances, low libido, erectile dysfunction, muscle loss, or mood changes).</li><li>Possible improvement in body composition, bone density, and overall sense of well-being.</li><li>Potential prevention or improvement of physical diseases and dysfunction related to declining hormone levels.</li></ul><h3>Potential Risks and Side Effects</h3><p>While TRT can be beneficial, it carries risks that may require medical attention. Side effects can range from mild to serious.</p><p>Common side effects may include:</p><ul><li>Pain, bruising, or infection at the injection site (for injection preparations)</li><li>Acne, oily skin, or hair loss</li><li>Fluid retention or swelling</li><li>Mood changes or irritability</li><li>Testicular shrinkage and decreased sperm production</li><li>Elevated red blood cell count</li><li>Skin transfer risk (for topical preparations)</li></ul><p>Serious or rare adverse effects may include:</p><ul><li>Elevated liver enzymes or liver inflammation</li><li>Polycythemia (requiring phlebotomy or dosage adjustment)</li><li>Worsening of sleep apnea</li><li>Prostate enlargement or stimulation of preexisting prostate cancer</li><li>Cardiovascular complications, including blood clots, stroke, or heart attack</li><li>Allergic reactions, including rash, swelling, or anaphylactoid response</li><li>Infertility (temporary or permanent)</li></ul><p>If you experience chest pain, shortness of breath, vision changes, leg swelling, or severe headache, stop treatment immediately and seek emergency medical attention (call 911).</p><h3>Bioidentical or Compounded Testosterone</h3><p>Some testosterone products may be prepared by compounding pharmacies and are considered non-FDA-approved formulations. Bioidentical or compounded testosterone products are used when commercial formulations are unavailable, not tolerated, or do not fulfill your personalized need. <em>Evidence comparing the safety or cardiovascular risk profile of compounded versus FDA-approved testosterone products remains inconclusive.</em></p><h3>Fertility and Family Planning</h3><p>Testosterone therapy can suppress sperm production and lead to temporary or permanent infertility. If fertility preservation is desired, alternative therapies such as clomiphene citrate (Clomid) or enclomiphene may be discussed. Clomid may cause visual changes, nausea, vomiting, or rare liver or lipid abnormalities. Any vision disturbances should prompt immediate discontinuation and ophthalmologic evaluation.</p><h3>Contraindications</h3><p>You confirm that you have disclosed any history of:</p><ul><li>Prostate or breast cancer</li><li>Uncontrolled sleep apnea</li><li>Severe heart disease or stroke</li><li>Polycythemia (elevated hematocrit)</li><li>Hypersensitivity to testosterone or formulation ingredients</li></ul><p>TRT is contraindicated in these conditions. Hypercalcemia may occur in immobilized patients. Older men on TRT may have a higher risk of prostate enlargement, though evidence remains inconclusive.</p><h3>Cardiovascular, Clotting, and Sleep Apnea Risks</h3><p>TRT may increase red blood cell production, potentially thickening the blood. This may contribute to cardiovascular strain, hypertension, or increased risk of clotting in susceptible individuals. Patients with sleep apnea may experience worsening symptoms and should report any snoring, daytime sleepiness, or witnessed apnea episodes.</p><h3>Monitoring and Laboratory Testing</h3><p>I understand that ongoing therapy requires periodic laboratory monitoring to ensure safety and effectiveness. Typical testing includes:</p><ul><li>CBC (hematocrit and hemoglobin) – monitor for red blood cells</li><li>PSA (prostate-specific antigen) – assess prostate health</li><li>Liver function tests and lipid panel – monitor metabolic effects</li><li>Testosterone levels – confirm therapeutic response</li></ul><p>These labs are usually obtained every 3 months or every month if the dose is adjusted and are required for continuation of therapy. Failure to complete lab testing may result in discontinuation of treatment.</p><h3>Alternatives to TRT</h3><p>You understand that there are reasonable alternatives to testosterone therapy, including:</p><ol><li>Doing nothing and monitoring symptoms.</li><li>Treating symptoms of low testosterone with non-hormonal approaches.</li><li>Lifestyle modification, improved nutrition, and management of comorbid conditions.</li></ol><h3>Medical Oversight and Program Participation</h3><p>I understand that:</p><ul><li>This program involves the medical judgment and supervision of a licensed healthcare provider.</li><li>Regular follow-up visits and laboratory monitoring are required.</li><li>I should immediately report any adverse effects or changes in my medical history to my provider.</li></ul><p>I acknowledge that I have read and understand the information provided above regarding Testosterone Replacement Therapy. I understand the potential benefits, risks, alternatives, and required monitoring. I consent to treatment with Testosterone Replacement Therapy under the supervision of my healthcare provider.</p>",
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0027",
+                  "equals": "I have read the above information and I do consent and wish to move forward"
+                }
+              }
+            ],
+            "options": {
+              "choices": [
+                "I have read the above information and I do consent and wish to move forward",
+                "I have read the above information and I do not wish to continue"
+              ],
+              "radio": true
+            }
+          },
+
+          {
+            "id": "600e12eed5aea6eca01b002a",
+            "formId": "600e12eed5aea6eca01b0001",
+            "title": "Disqualified",
+            "type": "Hidden Value",
+            "isOptional": true,
+            "previousFields": [
+              {
+                "type": "previousEquals",
+                "info": {
+                  "fieldId": "600e12eed5aea6eca01b0029",
+                  "equals": "I have read the above information and I do not wish to continue"
+                }
+              }
+            ],
+            "options": {
+              "default": "DQ",
+              "disableNext": true
+            }
+          }
+
+        ]
+      }
+    ],
+    "templates": [],
+    "calendar_event_templates": [],
+    "databases": []
+  }
+}
