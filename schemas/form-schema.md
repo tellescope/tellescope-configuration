@@ -658,6 +658,43 @@ For checkbox fields where different selections lead to different branches, use s
 }
 ```
 
+### Default Branch + DQ Gate Pattern
+
+When one answer is a disqualifying minority (e.g. "Female" on a sex question where the form is for males only), use `"after"` for the happy-path field and a conditional (`previousEquals` or `compoundLogic`) for the DQ field. The DQ field's `disableNext: true` blocks any patient who reaches it from advancing to the default-branch field.
+
+**Why this works:** `"after"` is the lowest-priority branch. When the DQ condition matches, the DQ field is shown first and `disableNext` prevents the patient from ever reaching the `"after"` field. Non-DQ patients skip the DQ field entirely and follow the default `"after"` path.
+
+```json
+[
+  {
+    "id": "...<dq-field>...",
+    "title": "Disqualified",
+    "type": "Hidden Value",
+    "isOptional": true,
+    "previousFields": [
+      {
+        "type": "previousEquals",
+        "info": { "fieldId": "<gate-field>", "equals": "Female" }
+      }
+    ],
+    "options": { "default": "DQ", "disableNext": true }
+  },
+  {
+    "id": "...<next-field>...",
+    "title": "Next question for qualifying patients",
+    "type": "stringLong",
+    "previousFields": [
+      {
+        "type": "after",
+        "info": { "fieldId": "<gate-field>" }
+      }
+    ]
+  }
+]
+```
+
+**DQ field type:** Use `Hidden Value` with `options.default: "DQ"` to silently record disqualification status without showing UI. Use `description` with `disableNext` when you want to display an explanation message to the patient.
+
 ### Hard Stop Pattern
 
 A "hard stop" prevents form progression using a `description` field with `disableNext` and no fields chaining from it:
