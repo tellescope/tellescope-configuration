@@ -9,6 +9,7 @@ This document describes the structure of Tellescope forms, including Forms, Form
 - [Field Options](#field-options)
 - [Conditional Logic](#conditional-logic)
 - [Form Customization](#form-customization)
+- [Merging Two Forms](#merging-two-forms)
 - [Complete Examples](#complete-examples)
 
 ---
@@ -994,3 +995,109 @@ interface FormCustomization {
   }
 }
 ```
+
+---
+
+## Merging Two Forms
+
+Combining two separate Tellescope forms into a single unified form requires careful handling of field IDs. Getting this wrong causes fields to appear duplicated on the canvas.
+
+### How Tellescope Import Handles Field IDs
+
+When Tellescope imports a form:
+1. Each field's `id` becomes the new field's `originalId` in the stored record.
+2. Tellescope assigns a new internal `id` to the field.
+3. **If the imported field's `id` already exists in the account** (from another form or a prior import), Tellescope creates a second copy of that field rather than deduplicating — resulting in the same question appearing twice on the canvas, one connected and one floating.
+
+### The Duplication Trap
+
+A Tellescope form export can contain two parallel sets of fields from multiple re-imports. For example, a form that has been re-imported will have:
+- An **original set** with IDs like `69cbf03c...` — includes the `root` previousField type and clean internal references.
+- A **re-import set** with newer IDs like `69f0b847...` — these reference the original set's IDs, which may not exist in your target account.
+
+Using the re-import set will produce broken references (`INVALID_PREVIOUS_FIELD` validator errors) and cause the import to double-render fields.
+
+### Identifying the Original Field Set
+
+The authoritative field set is the one containing a field with `previousFields: [{"type": "root", "info": {}}]`. All fields in that set share the same ID prefix (first 8 hex characters). Filter to only that prefix when building the merge.
+
+### Correct Merge Procedure
+
+1. **Use only the original field set** — filter by the ID prefix that contains the `root` field.
+2. **Remove `Redirect` type fields** from the appended form — they break the flow when embedded in the middle of another form.
+3. **Generate fresh random IDs for every field** in the appended form using a cryptographically random 12-byte hex string (e.g., `os.urandom(12).hex()` in Python). Do not reuse any IDs from the source export.
+4. **Remap all internal references** after ID generation: replace every occurrence of each old field ID (as a JSON string) in the serialized field array before parsing. Field IDs appear in:
+   - `previousFields[*].info.fieldId`
+   - `previousFields[*].info.condition` object keys (used in `compoundLogic`)
+   - `options.subFields[*].id` (Question Group sub-fields)
+5. **Connect the appended form's root field** to the last field of the base form by replacing its `previousFields` with `[{"type": "after", "info": {"fieldId": "<base-form-last-field-id>"}}]`.
+6. **Update `formId`** on all fields (both base and appended) to the new merged form's ID.
+7. **Remove `originalId`** from all appended fields — stale `originalId` values can cause Tellescope to follow transitive ID chains and pull in old field copies.
+8. **Delete any previous merged import attempts** from your Tellescope account before importing the new merged form. Prior imports leave fields in Tellescope's database; a new import can pull those stale fields into the new form.
+
+### Reference Script
+
+```python
+import json, os, binascii
+
+with open('base-form.json') as f:
+    base_data = json.load(f)
+with open('append-form.json') as f:
+    append_data = json.load(f)
+
+base_form = base_data['data']['forms'][0]
+append_form = append_data['data']['forms'][0]
+
+# Step 1: find the original field set (contains the root field), remove Redirect
+# Identify the ID prefix of the set containing the root field
+root_prefix = next(
+    f['id'][:8] for f in append_form['fields']
+    if any(p.get('type') == 'root' for p in f.get('previousFields', []))
+)
+append_fields_raw = [
+    f for f in append_form['fields']
+    if f['id'].startswith(root_prefix) and f.get('type') != 'Redirect'
+]
+
+# Step 2: generate fresh IDs and remap all references
+old_ids = [f['id'] for f in append_fields_raw]
+id_map = {old: binascii.hexlify(os.urandom(12)).decode() for old in old_ids}
+append_json = json.dumps(append_fields_raw)
+for old, new in id_map.items():
+    append_json = append_json.replace(f'"{old}"', f'"{new}"')
+append_fields = json.loads(append_json)
+
+# Step 3: connect root field to base form's last field
+root_field = next(
+    f for f in append_fields
+    if any(p.get('type') == 'root' for p in f.get('previousFields', []))
+)
+root_field['previousFields'] = [{'type': 'after', 'info': {'fieldId': '<base-last-field-id>'}}]
+
+# Step 4: assign new form ID, update formId, strip originalId
+new_form_id = binascii.hexlify(os.urandom(12)).decode()
+for f in append_fields:
+    f['formId'] = new_form_id
+    f.pop('originalId', None)
+for f in base_form['fields']:
+    f['formId'] = new_form_id
+
+# Step 5: apply Y offset so appended fields appear below base fields on canvas
+base_ys = [f['flowchartUI']['y'] for f in base_form['fields'] if 'flowchartUI' in f]
+append_ys = [f['flowchartUI']['y'] for f in append_fields if 'flowchartUI' in f]
+y_offset = max(base_ys) - min(append_ys) + 500
+for f in append_fields:
+    if 'flowchartUI' in f:
+        f['flowchartUI']['y'] += y_offset
+
+# Step 6: build merged form
+merged = dict(base_form)
+merged['id'] = new_form_id
+merged.pop('originalId', None)
+merged['fields'] = base_form['fields'] + append_fields
+merged['numFields'] = len(merged['fields'])
+```
+
+### numFields in Merged Forms
+
+The `numFields` value on a form counts sub-fields inside Question Groups recursively, not just top-level field entries. For a merged form, set `numFields` to `len(merged_fields)` (count of top-level field objects). Tellescope recalculates the true recursive count on import.
